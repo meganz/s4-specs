@@ -1,92 +1,7379 @@
-# s4-specs
+# S4 APIs
+This document describes S4 coverage of IAM and S3 APIs.
+
+-   [1. Common Details](#1-common-details)
+    -   [1.1. Account Identification](#11-account-identification)
+    -   [1.2. Endpoints](#12-endpoints)
+    -   [1.3. Errors](#13-errors)
+-   [2. S3 API](#2-s3-api)
+    -   [2.1. Conventions](#21-conventions)
+        -   [2.1.1. Bucket identification](#211-bucket-identification)
+            -   [Path Style](#path-style)
+            -   [Virtual-Hosted Style](#virtual-hosted-style)
+        -   [2.1.2. Object identification: key](#212-object-identification-key)
+            -   [Path Style](#path-style-1)
+            -   [Virtual-Hosted Style](#virtual-hosted-style-1)
+        -   [2.1.3. Object Key Validation](#213-object-key-validation)
+        -   [2.1.4. Bucket and Object ownership](#214-bucket-and-object-ownership)
+    -   [2.2. Services](#22-services)
+        -   [2.2.1. Buckets](#221-buckets)
+            -   [ListBuckets](#listbuckets)
+                -   [Request](#request)
+                -   [Success Response](#success-response)
+                -   [Errors](#errors)
+            -   [CreateBucket](#createbucket)
+                -   [Request](#request-1)
+                -   [Restrictions on Bucket Name](#restrictions-on-bucket-name)
+                -   [Success Response](#success-response-1)
+                -   [Errors](#errors-1)
+                    -   [BucketAlreadyOwnedByYou](#bucketalreadyownedbyyou)
+                    -   [BucketAlreadyExists and S3 Discrepancies](#bucketalreadyexists-and-s3-discrepancies)
+                    -   [InvalidBucketName](#invalidbucketname)
+                    -   [InternalError](#internalerror)
+            -   [DeleteBucket](#deletebucket)
+                -   [Request](#request-2)
+                -   [Restrictions on Bucket Name](#restrictions-on-bucket-name-1)
+                -   [Success Response](#success-response-2)
+                -   [Errors](#errors-2)
+                    -   [InvalidBucketName](#invalidbucketname-1)
+                    -   [InternalError](#internalerror-1)
+                    -   [BucketNotEmpty](#bucketnotempty)
+            -   [HeadBucket](#headbucket)
+                -   [Request](#request-3)
+                -   [Restrictions on Bucket Name](#restrictions-on-bucket-name-2)
+                -   [Success Response](#success-response-3)
+                -   [Errors](#errors-3)
+                    -   [InvalidBucketName](#invalidbucketname-2)
+        -   [2.2.2. Objects](#222-objects)
+            -   [ListObjects](#listobjects)
+                -   [Request](#request-4)
+                -   [Success Response](#success-response-4)
+                -   [Errors](#errors-4)
+                    -   [InvalidArgument](#invalidargument)
+                    -   [InternalError](#internalerror-2)
+            -   [ListObjectsV2](#listobjectsv2)
+                -   [Request](#request-5)
+                -   [Success Response](#success-response-5)
+                -   [Errors](#errors-5)
+                    -   [InvalidArgument](#invalidargument-1)
+                    -   [InternalError](#internalerror-3)
+            -   [PutObject](#putobject)
+                -   [Request](#request-6)
+                -   [Success Response](#success-response-6)
+                -   [Errors](#errors-6)
+                    -   [InvalidArgument](#invalidargument-2)
+                    -   [BadDigest](#baddigest)
+                    -   [MethodNotAllowed](#methodnotallowed)
+                    -   [InternalError](#internalerror-4)
+                -   [Restrictions in object name (i.e. resource Key)](#restrictions-in-object-name-ie-resource-key)
+            -   [CopyObject](#copyobject)
+                -   [Request](#request-7)
+                -   [Success Response](#success-response-7)
+                -   [Errors](#errors-7)
+                    -   [InvalidArgument](#invalidargument-3)
+                    -   [NoSuchBucket](#nosuchbucket)
+                    -   [NoSuchKey](#nosuchkey)
+                    -   [InvalidStorageClass](#invalidstorageclass)
+                    -   [AccessDenied](#accessdenied)
+                    -   [Internal Error](#internal-error)
+                -   [Restrictions in object name (i.e. resource)](#restrictions-in-object-name-ie-resource)
+            -   [GetObject](#getobject)
+                -   [Request](#request-8)
+                -   [Restrictions in object name (i.e. resource)](#restrictions-in-object-name-ie-resource-1)
+                -   [Success Response](#success-response-8)
+                -   [Errors](#errors-8)
+                    -   [NoSuchKey](#nosuchkey-1)
+                    -   [InvalidRange](#invalidrange)
+            -   [HeadObject](#headobject)
+                -   [Request](#request-9)
+                -   [Success Response](#success-response-9)
+                -   [Errors](#errors-9)
+                    -   [NoSuchKey](#nosuchkey-2)
+                    -   [InvalidRange](#invalidrange-1)
+            -   [DeleteObject](#deleteobject)
+                -   [Request](#request-10)
+                -   [Success Response](#success-response-10)
+                -   [Errors](#errors-10)
+                    - [NoSuchBucket](#nosuchbucket-1)
+            -   [CreateMultipartUpload](#createmultipartupload)
+                -   [Request](#request-11)
+                -   [Success Response](#success-response-11)
+                -   [Errors](#errors-11)
+                    -   [ServiceUnavailable](#serviceunavailable)
+                    -   [AccountProblem](#accountproblem)
+                    -   [InternalError](#internalerror-5)
+                -   [Restrictions in object name (i.e. resource Key)](#restrictions-in-object-name-ie-resource-key-1)
+            -   [UploadPart](#uploadpart)
+                -   [Request](#request-12)
+                -   [Success Response](#success-response-12)
+                -   [Errors](#errors-12)
+                    -   [BadDigest](#baddigest-1)
+                    -   [InvalidDigest](#invaliddigest)
+                    -   [ServiceUnavailable](#serviceunavailable-1)
+                    -   [InvalidPart](#invalidpart)
+                    -   [InternalError](#internalerror-6)
+            -   [CompleteMultipartUpload](#completemultipartupload)
+                -   [Request](#request-13)
+                -   [Success Response](#success-response-13)
+                -   [Errors](#errors-13)
+                    -   [MalformedXML](#malformedxml)
+                    -   [InvalidRequest](#invalidrequest)
+                    -   [InvalidPartOrder](#invalidpartorder)
+                    -   [NoSuchUpload](#nosuchupload)
+                    -   [InvalidPart](#invalidpart)
+                    -   [InternalError](#internalerror-7)
+            -   [AbortMultipartUpload](#abortmultipartupload)
+                -   [Request](#request-14)
+                -   [Success Response](#success-response-14)
+                -   [Errors](#errors-14)
+                    -   [NoSuchUpload](#nosuchupload-1)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
+                -   [Request](#request-15)
+                -   [Success Response](#success-response-15)
+                -   [Errors](#errors-15)
+                    -   [InvalidDigest](#invaliddigest-1)
+                    -   [BadDigest](#baddigest-2)
+                    -   [InternalError](#internalerror-8)
+            -   [GetBucketPolicy](#getbucketpolicy)
+                -   [Request](#request-16)
+                -   [Success Response](#success-response-16)
+                -   [Errors](#errors-16)
+                    -   [NoSuchBucketPolicy](#nosuchbucketpolicy)
+                    -   [InvalidPolicyDocument](#invalidpolicydocument)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-17)
+                -   [Success Response](#success-response-17)
+                -   [Errors](#errors-17)
+                    -   [NoSuchBucketPolicy](#nosuchbucketpolicy-1)
+                    -   [InternalError](#internalerror-9)
+    -   [2.3. Presigned URL](#23-presigned-url)
+        -   [Authentication](#authentication)
+        -   [Signature Version](#signature-version)
+        -   [Specific Errors](#specific-errors)
+    -   [2.4. Presigned Post](#24-presigned-post)
+-   [3. IAM API](#3-iam-api)
+    -   [3.1. Conventions](#31-conventions)
+        -   [Parameters in Query String](#parameters-in-query-string)
+        -   [Parameters in Body](#parameters-in-body)
+    -   [3.2 S4 Managed Policies](#32-s4-managed-policies)
+    -   [3.3. Services](#33-services)
+        -   [3.3.1. Policies](#331-policies)
+            -   [GetPolicy](#getpolicy)
+                -   [Request](#request-18)
+                -   [Success Response](#success-response-18)
+                -   [Errors](#errors-18)
+                    -   [InvalidArgument](#invalidargument-4)
+            -   [GetPolicyVersion](#getpolicyversion)
+                -   [Request](#request-19)
+                -   [Success Response](#success-response-19)
+                -   [Errors](#errors-19)
+                    -   [InvalidArgument](#invalidargument-5)
+            -   [ListPolicies](#listpolicies)
+                -   [Request](#request-20)
+                -   [Success Response](#success-response-20)
+                -   [Errors](#errors-20)
+                    -   [InvalidArgument](#invalidargument-6)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies-listattachedgrouppolicies)
+                -   [Request](#request-21)
+                -   [Success Response](#success-response-21)
+                -   [Errors](#errors-21)
+                    -   [InvalidArgument](#invalidargument-7)
+                    -   [AccountProblem](#accountproblem-1)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy-attachgrouppolicy)
+                -   [Request](#request-22)
+                -   [Success Response](#success-response-22)
+                -   [Errors](#errors-22)
+                    -   [InvalidArgument](#invalidargument-8)
+                    -   [InternalError](#internalerror-10)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy-detachgrouppolicy)
+                -   [Request](#request-23)
+                -   [Success Response](#success-response-23)
+                -   [Errors](#errors-23)
+                    -   [InvalidArgument](#invalidargument-9)
+                    -   [InternalError](#internalerror-11)
+
+# **1. Common Details**
+
+This section addresses common details shared among S4 offered APIs: S3 and IAM.
+
+# **1.1. Account Identification**
+
+The account ID is 15 base10 (i.e. 0-9) digit string. It is padded with leading zeros if necessary.
+
+# **1.2. Endpoints**
+
+Available S4 endpoints:
+
+| Endpoint | Location |
+| --- | --- |
+| [eu-central-1.s4.mega.io](http://eu-central-1.s4.mega.io/)  | Amsterdam |
+| [ca-central-1.s4.mega.io](http://ca-central-1.s4.mega.io/) | Montreal |
+| [ca-west-1.s4.mega.io](http://ca-west-1.s4.mega.io/) | Vancouver |
+
+Please note the endpoint [g.s4.mega.io](http://g.s4.mega.io/) is also available which currently points to `eu-central-1.s4.mega.io`.
+
+Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
+
+# **1.3. Errors**
+S4 meets S3 [error formatting](https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html). e.g.:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Error>
+  <Code>NoSuchKey</Code>
+  <Message>The specified key does not exist.</Message>
+  <Resource>/myobj</Resource>
+  <RequestId>HC0000000000000001</RequestId>
+</Error>
+```
+
+The value of Code is one of the standard IAM or S3 error codes. The value of Message is a human-readable indication of what the origin of the problem is.
+
+# **2. S3 API**
+
+# **2.1. Conventions**
+
+# **2.1.1. Bucket identification**
+
+Most of S3 services receive a  `<bucket_name>`  argument identifying the bucket that will be target of the operation. The bucket argument can be received in two different ways:
+
+### Path Style
+
+The argument \<bucket_name\> is specified as part of the URL in the HTTP request, e.g.:
+
+`GET /<bucket_name>/ HTTP/1.1.`  
+`Host: s3.eu-central-1.s4.mega.io`
+
+### Virtual-Hosted Style
+
+The argument \<bucket_name\> is specified as part of the Host in the HTTP request (i.e. as part of the sub-domain), e.g.:
+
+`GET / HTTP/1.1.`  
+`Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
+
+# **2.1.2. Object identification: key**
+
+S3 services involving object manipulation or retrieval requires the object to be identified by mean of a string known as  `<key>`. It is specified as part of the URL:
+
+### Path Style
+
+`GET /<bucket_name>/<key> HTTP/1.1.`  
+`Host: s3.eu-central-1.s4.mega.io`
+
+### Virtual-Hosted Style
+
+`GET /<key> HTTP/1.1.`  
+`Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
+
+# **2.1.3. Object Key Validation**
+
+Object keys must not be  `..`
+
+Object keys must not begin with  `../`  or end with  `/..`
+
+Object keys must not contain  `/./`  nor  `/../`
+
+If validation fails, an  **AccessDenied**  error is returned.
+  
+# **2.1.4. Bucket and Object Ownership**
+
+Every bucket and every object, despite who created them, is owned by the canonical user (root account).
+
+# **2.2. Services**
+
+S3 endpoint is s3._\<region\>_.s4.mega.io.
+
+# **2.2.1. Buckets**
+
+## ListBuckets
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left" colspan="2">URL</th>
+</tr>
+<tr>
+<td align="left" colspan="2">/</td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ListAllMyBucketsResult>
+  <Buckets>
+    <Bucket>
+      <CreationDate>2022-01-28T11:44:13Z</CreationDate>
+      <Name>bucket1</Name>
+    </Bucket>
+    <Bucket>
+      <CreationDate>2022-02-15T18:22:37Z</CreationDate>
+      <Name>bucket2</Name>
+    </Bucket>
+  </Buckets>
+  <Owner>
+    <ID>57A54E56B89C54B767F01987C0BC77929B5212C0BF165E3CF2B8DF818C46B66C</ID>
+    <DisplayName>158563168473704</DisplayName>
+  </Owner>
+</ListAllMyBucketsResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+_\<No specific error expected\>_
+
+## CreateBucket
+
+Creates the bucket  `<bucket_name>`  if it is a valid bucket name and it does not exist yet.
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-acl: `ACL`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-full-control: `GrantFullControl`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read: `GrantRead`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read-acp: `GrantReadACP`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write: `GrantWrite`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write-acp: `GrantWriteACP`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-bucket-object-lock-enabled: `ObjectLockEnabledForBucket`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-ownership: `ObjectOwnership`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CreateBucketConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">       🔴 - NOT supported
+    <LocationConstraint>string</LocationConstraint>
+</CreateBucketConfiguration>
+```
+
+</td>
+</tr>
+</table>
+
+### Restrictions on Bucket Name
+
+- Bucket names must be between  `3`  (min) and  `63`  (max) characters long
+
+- Bucket names can consist only of lowercase letters, numbers, dots  `.`, and hyphens  `-`
+
+- Bucket names must begin and end with a letter or number
+
+- Bucket names must not contain two adjacent periods
+
+- Bucket names must not be formatted as an IP address (for example,  `192.168.5.4`)
+
+- Bucket names must not start with the prefix `xn--`
+
+- Bucket names must not end with the suffix `-s3alias`
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Location: Location
+
+</td>
+<td>
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### BucketAlreadyOwnedByYou
+
+Returned in case there is a bucket with `<bucket_name>` found in place when trying to create a new folder or new folder creation succeeds but the node is then replaced by a different one
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">409 Conflict</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### BucketAlreadyExists and S3 Discrepancies
+
+The S3 standard behavior is to only return AlreadyOwnedByYou if the bucket exists but had already been created in a region different from the requested one with the request succeeding otherwise. S4 does not support this behavior as it is considered to be confusing. Moreover, S4 does not have globally shared bucket namespaces like S3 does. In S4, the owner of a bucket corresponds to the owner of an account. Thus, an error indicating a duplicate bucket is _always_ a BucketAlreadyOwnedByYou error. S4 never returns BucketAlreadyExists.
+
+#### InvalidBucketName
+
+Returned in case `<bucket_name>` does not satisfy restrictions.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to internal technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## DeleteBucket
+
+Deletes the bucket  `<bucket_name>`  if it is a valid bucket name and it is not empty.
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">DELETE</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner:  `BucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Restrictions on Bucket Name
+
+Same as for CreateBucket
+
+### Success Response
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">204 No Content</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidBucketName
+
+Returned in case `bucket_name` does not satisfy restrictions.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to internal technical reason.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### BucketNotEmpty
+
+Returned if called on a non-empty bucket
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">409 Conflict</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## HeadBucket
+
+Determines if the bucket  `<bucket_name>`  exists and you have access to it.
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">HEAD</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner:  `BucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>  
+
+### Restrictions on Bucket Name
+
+Same as for CreateBucket
+
+### Success Response
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidBucketName
+
+Returned in case `<bucket_name>` does not satisfy restrictions.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+# **2.2.2. Objects**
+
+## ListObjects
+
+List objects in  `<bucket_name>`  .
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">delimiter</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">encoding-type</td>
+<td align="left">&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">marker</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">max-keys</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">prefix</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left"  colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Location: Location
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ListBucketResult>
+   <IsTruncated>boolean</IsTruncated>
+   <Marker>string</Marker>
+   <NextMarker>string</NextMarker>
+   <Contents>
+      <ChecksumAlgorithm>string</ChecksumAlgorithm>     🔴 - NOT supported
+      ...
+      <ETag>string</ETag>
+      <Key>string</Key>
+      <LastModified>timestamp</LastModified>
+      <Owner>
+         <DisplayName>string</DisplayName>
+         <ID>string</ID>
+      </Owner>
+      <Size>integer</Size>
+      <StorageClass>string</StorageClass>   🟠 – Always set to "STANDARD"
+   </Contents>
+   ...
+   <Name>string</Name>
+   <Prefix>string</Prefix>
+   <Delimiter>string</Delimiter>
+   <MaxKeys>integer</MaxKeys>
+   <CommonPrefixes>
+      <Prefix>string</Prefix>
+   </CommonPrefixes>
+   ...
+   <EncodingType>string</EncodingType>      🔴 - NOT supported
+</ListBucketResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned in case \<max-keys\> argument has a wrong format.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## ListObjectsV2
+
+List objects in  `<bucket_name>`  .
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?list-type=2
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?list-type=2
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">continuation-token</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">delimiter</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">encoding-type</td>
+<td align="left">&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">fetch-owner</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">max-keys</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">prefix</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">start-after</td>
+<td align="left">&#128994; YES</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ListBucketResult>
+   <IsTruncated>boolean</IsTruncated>
+   <ContinuationToken>string</ContinuationToken>
+   <NextContinuationToken>string</NextContinuationToken>
+   <Contents>
+      <ChecksumAlgorithm>string</ChecksumAlgorithm>     🔴 - NOT supported
+      ...
+      <ETag>string</ETag>
+      <Key>string</Key>
+      <LastModified>timestamp</LastModified>
+      <Owner>           🟠 – Returned only if fetch-owner=true in URL
+         <DisplayName>string</DisplayName>
+         <ID>string</ID>
+      </Owner>
+      <Size>integer</Size>
+      <StorageClass>string</StorageClass>       🟠 – Always set to "STANDARD"
+   </Contents>
+   ...
+   <Name>string</Name>
+   <Prefix>string</Prefix>
+   <Delimiter>string</Delimiter>
+   <MaxKeys>integer</MaxKeys>
+   <CommonPrefixes>
+      <Prefix>string</Prefix>
+   </CommonPrefixes>
+   ...
+   <EncodingType>string</EncodingType>      🔴 - NOT supported
+
+   <KeyCount>integer</KeyCount>
+</ListBucketResult>
+```
+
+</td>
+</tr>
+</table> 
+
+### Errors
+
+#### InvalidArgument
+
+Returned in case
+
+1) \<max-keys\> argument has a wrong format.
+2) \<continuation-token\> cannot be decoded or points out of bounds
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## PutObject
+
+Creates a new object with the provided contents
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Cache-Control
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Disposition
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Encoding
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Language
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-MD5
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Type
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Expires
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-acl:  `ACL`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-full-control: `GrantFullControl`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read: `GrantRead`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read-acp: `GrantReadACP`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write: `GrantWrite`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write-acp: `GrantWriteACP`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-legal-hold
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-mode
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-retain-until-date
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-sdk-checksum-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-context
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-storage-class
+
+</td>
+<td align="left">
+
+&#128308; NO (Assuming STANDARD)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-tagging
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-website-redirect-location
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Object data.
+
+</td>
+<td align="left">
+
+May be [Chunked Payload](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-streaming.html)
+
+</td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+ETag
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expiration
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-decoded-content-length
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-context
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned in cases where there are invalid/missing arguments in the request. Particularly:  
+1) If using chunked payload, and _`x-amz-decoded-content-length`_ is missing.
+
+2) If using chunked payload, and _`x-amz-decoded-content-length`_  is not valid.
+
+This may happen in case of chunked payload when the provided header does not have a valid value.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### BadDigest
+
+Returned if the Content-MD5 does not match the MD5 computed while uploading.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### MethodNotAllowed
+
+Returned in case the new object name does not validate constraints (see below)
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">405 Method Not Allowed</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned in case the upload failed to complete
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+### Restrictions in object name (i.e. resource Key)
+
+- Object keys must be between  `1`  (min) and  `1024`  (max) characters long
+- Object keys must not contain non-printable ASCII characters (`128–255`  decimal characters)
+- Object keys must not contain  `\`,  `^`,  `{`,  `}`,  `%`, backtick,  `[`,  `]`,  `"`,  `<`,  `>`,  `~`,  `#`  nor  `|`
+
+## CopyObject
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Cache-Control
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Disposition
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Encoding
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Language
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Expires
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-acl:  `ACL`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-match
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-modified-since
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-none-match
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-unmodified-since
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-storage-class
+
+</td>
+<td align="left">
+
+&#128994; YES (Only STANDARD is allowed)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-source-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-full-control: `GrantFullControl`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read: `GrantRead`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read-acp: `GrantReadACP`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write: `GrantWrite`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write-acp: `GrantWriteACP` 
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-metadata-directive
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-tagging-directive
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-context
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-tagging
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-website-redirect-location
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-legal-hold
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-mode
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-retain-until-date
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expiration
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-context
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned if x-amz-copy-source-path is empty or does not denote both bucket and resource.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### NoSuchBucket
+
+Returned if the source bucket does not exist
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### NoSuchKey
+
+Returned if the source key does not exist
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidStorageClass
+
+Returned if a storage class other than STANDARD is used in the request
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### AccessDenied
+
+In addition to usual policy validation errors, this is returned if policy validation fails on the copy source
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### Internal Error
+
+Returned in the event of internal API error.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+### Restrictions in object name (i.e. resource)
+
+The same requirements for object keys listed in the PutObject service implementation details apply.
+
+If validation fails, the  `AccessDenied` error is returned.
+
+## GetObject
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+_response-cache-control_
+
+</td>
+<td align="left">
+
+&#128994; YES</td>
 
 
+</tr>
+<tr>
+<td align="left">
 
-## Getting started
+response-content-disposition
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+</td>
+<td align="left">
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+&#128308; NO
 
-## Add your files
+</td>
+</tr>
+<tr>
+<td align="left">
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+response-content-encoding
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+response-content-language
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+response-content-type
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+response-expires
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+versionId
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-mode: `ChecksumMode`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm: `SSECustomerAlgorithm`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key: `SSECustomerKey`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5:  `SSECustomerKeyMD5`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Match:  `IfMatch`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Modified-Since: `IfModifiedSince`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match: `IfNoneMatch`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Range: Range
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Restrictions in object name (i.e. resource)
+
+The same object key requirements listed in PutObject apply.
+
+If validation fails, an  `AccessDenied` error is returned.
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">206 Partial Content</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Cache-Control
+
+</td>
+<td align="left">
+
+&#128992; Partial, only if set by URI parameter
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Disposition
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Encoding
+
+</td>
+<td align="left">
+
+&#128992; Partial, only if set by URI parameter
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Language
+
+</td>
+<td align="left">
+
+&#128992; Partial, only if set by URI parameter
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Range
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Type
+
+</td>
+<td align="left">
+
+&#128992; Partial, only if set by URI parameter
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+ETag
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Expires
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Last-Modified
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### NoSuchKey
+
+Returned if the key does not name an object in the bucket or the key is not a file.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidRange
+
+Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">416 Requested Range Not Satisfiable</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## HeadObject
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">HEAD</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">partNumber</td>
+<td align="left">&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">versionId</td>
+<td align="left">&#128308; NO</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-mode: `ChecksumMode`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm: `SSECustomerAlgorithm`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key: `SSECustomerKey`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5: `SSECustomerKeyMD5`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Match: `IfMatch`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Modified-Since: `IfModifiedSince`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match: `IfNoneMatch`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Range: Range
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+_Cache-Control_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Disposition
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Encoding
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Language
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Length
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Type
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+ETag
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Expires
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Last-Modified
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-storage-class
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### NoSuchKey
+
+Returned if the key does not name an object in the bucket or the key is not a file
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidRange
+
+Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">416 Requested Range Not Satisfiable</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## DeleteObject
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">DELETE</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+versionId
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-bypass-governance-retention: `boolean`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-mfa: `string`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">204 NoContent</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-delete-marker
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+Note that if the object with the given key does not exist, `DeleteObject` still returns `204 NoContent`.
+
+#### NoSuchBucket
+
+Returned if the bucket which the object is attempted to be deleted from does not exist.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## CreateMultipartUpload
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">POST</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploads
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-acl
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Cache-Control
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Disposition
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Encoding
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Language
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Type
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Expires
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-full-control
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-read-acp
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-grant-write-acp
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-website-redirect-location
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-storage-class
+
+</td>
+<td align="left">
+
+&#128308; NO (Assuming STANDARD)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-context
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-tagging
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-mode
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-retain-until-date
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-object-lock-legal-hold
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table> 
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-abort-date
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-abort-rule-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-context
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<InitiateMultipartUploadResult>
+    <Bucket>string</Bucket>
+    <Key>string</Key>
+    <UploadId>string</UploadId>
+</InitiateMultipartUploadResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### ServiceUnavailable
+
+Returned in case server is too crowded.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">503 Service Unavailable</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### AccountProblem
+
+Returned if user has exceed quota.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned in case the request failed to complete
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+### Restrictions in object name (i.e. resource Key)
+
+The same object key requirements listed in PutObject apply.  
+If validation fails, an  `AccessDenied` error is returned.
+
+## UploadPart
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploadId
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+</tr>
+<tr>
+<td align="left">
+
+partNumber
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Content-Length
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-MD5
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-sdk-checksum-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>  
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+ETag
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### BadDigest
+
+Returned if the Content-MD5 does not match the MD5 computed while uploading.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidDigest
+
+Returned in case header  `Content-MD5`  is not in a valid MD5 base64 format.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### ServiceUnavailable
+
+Returned in case server is too crowded.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">503 Service Unavailable</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidPart
+
+***Note:*** although under the S3 standard, InvalidPart is not an expected error for UploadPart operation, S4 applies several checks according to its own part restrictions:
+1. The uploaded part have inconsistent size with the rest of uploaded parts. For an N-parts upload, S4 requires parts in the range 1 to N-1 to have the same size, the part N can have a different size but must not be larger than previous parts. This error will cause the entire upload to be aborted.<br>**Note:** the S3 standard does not impose this requirement.
+1. The part is empty.<br>**Note:** the S3 standard does not impose this requirement.
+1. This part has already been uploaded. S4 does not allow re-uploading parts.<br>**Note:** the S3 standard does not impose this requirement.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### EntityTooSmall
+
+Returned in case the size of this (or any previously uploaded) part is smaller than 5MB, unless this is the last part, in which case, the smaller than 5MB size is allowed. Please note that:
+1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion. 
+1. This error will cause the entire upload to be aborted.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_  
+
+</td>
+</tr>
+</table>
+
+#### NoSuchUpload
+
+Returned if:
+- The requested upload ID does not exist or the object key does not belong to the upload with the given ID or
+- The upload has been aborted or completed
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_  
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned in case the request failed to complete, e.g. storage timeout, etc
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## CompleteMultipartUpload
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">POST</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploadId
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CompleteMultipartUpload xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <Part>
+      <PartNumber>integer</PartNumber>
+      <ETag>string</ETag>
+   </Part>
+   ...
+</CompleteMultipartUpload>
+```
+
+</td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expiration
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<CompleteMultipartUploadResult>
+   <Location>string</Location>
+   <Bucket>string</Bucket>
+   <Key>string</Key>
+   <ETag>string</ETag>
+</CompleteMultipartUploadResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### MalformedXML
+
+Returned in case the request body is not a valid xml message, or does not specify a valid ETag or PartNumber.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidRequest
+
+Returned in case the request body does not specify any valid part info.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidPartOrder
+
+Returned if in the request body, the part list was not in ascending order. The part list must be ordered by part number.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### NoSuchUpload
+
+Returned if one of the following conditions is true:
+- The requested upload ID does not exist or the object key does not belong to the upload with the given ID
+- The upload has been aborted.
+- The upload has been completed. (It is a deviation from the S3 standard. S3 allows to complete a mulipart upload unlimited times as long as the part composition is unchanged.)
+- There is another completion request with the same upload Id running underway. (It is a deviation just like explained above)
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidPart
+
+Returned for one of the following reasons:  
+1. The part list in the completion request does not include all the uploaded parts.<br>**Note:** the S3 standard does not impose this requirement.
+2. One or more specified parts in the completion request haven't been uploaded.
+3. One or more specified parts in the completion request do not match ETag.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned in case the request failed to complete, e.g. failed to retrieve the uploaded object, etc
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## AbortMultipartUpload
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">DELETE</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploadId
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">204  No Content</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### NoSuchUpload
+
+Returned for one of the following reasons:
+- The requested upload ID does not exist or the object key does not belong to the upload with the given ID
+- The upload has completed or has already been aborted (Note, the S3 standard always returns 204 in this case)
+
+# **2.2.3. Policies (on Buckets)**
+
+## PutBucketPolicy
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?policy
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?policy
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Content-MD5: `ContentMD5` _(mandatory)_
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm` _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-confirm-remove-self-bucket-access: `ConfirmRemoveSelfBucketAccess` _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">{ Policy in JSON format }</td>
+<td align="left">&#128994; YES</td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidDigest
+
+Returned in case header  `Content-MD5`  is missing.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### BadDigest
+
+Returned in case  `Content-MD5`  header value does not match computed MD5.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## GetBucketPolicy
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?policy
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?policy
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>   
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">{ Policy in JSON format }</td>
+</tr>
+</table>
+
+### Errors
+
+#### NoSuchBucketPolicy
+
+Returned in case  `<bucket_name>`  does not have an inline policy document.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InvalidPolicyDocument
+
+Mandatory JSON property is missing.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## DeleteBucketPolicy
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">DELETE</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?policy
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?policy
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">204 No Content</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+</tr>
+</table> 
+
+### Errors
+
+#### NoSuchBucketPolicy
+
+Returned in case  `<bucket_name>`  does not have an inline policy document.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+# **2.3. Presigned URL**
+
+### Authentication
+
+Instead of using [Authorization Header](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html)  in service request, presigned url put authentication data in  [Query Parameters](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html).
+
+### Signature Version
+
+Only version 4 is supported by S4. While the S3 standard supports both V1 and V4.
+
+### Specific Errors
+
+| Error Code (see: 1.3.1.1) | HTTP Status Code | Description
+| :--- | :--- | :---
+| - [AuthorizationQueryParametersError](#authorizationqueryparameterserror) | 400 Bad Request | 1) Unsupported signature algorithm<br>2) Invalid expiration (e.g. negative, non-integer, or exceed max limit (a default limit is 7 days))
+| - [AccessDenied](#accessdenied) | 403 Forbidden | The request has expired
+| - [SignatureDoesNotMatch](#signaturedoesnotmatch) | 403 Forbidden
+
+# **2.4. Presigned Post**
+
+Presigned Post can only be used for uploading files.
+
+Currently, it is NOT supported by S4.
+
+# **3. IAM Api**
+
+# **3.1. Conventions**
+
+IAM services have the end-point  `iam.<region>.s4.mega.io`, and all of them have a common URL resource:  `/`.
+IAM services have an  `Action`  parameter that contains the name of the service. Both the  `Action`  parameter as well as the rest of the service arguments can be received in two different ways:
+
+### Parameters in Query String
+
+<table>
+<tr>
+<th align="left">Method</th>
+</tr>
+<tr>
+<td align="left">GET</td>
+</tr>
+<tr>
+<th align="left">URL</th>
+</tr>
+<tr>
+<td align="left">/</td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+</tr>
+<tr>
+<td align="left">
+
+Action: `ActionName`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+...
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+</tr>
+<tr>
+<th align="left">Example</th>
+</tr>
+<tr>
+<td align="left">
+
+`GET /?Action=ListPolicies&Version=2010-05-08&AUTHPARAMS HTTP/1.1`<br>`Host: iam.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+</table>
+
+### Parameters in Body
+
+<table>
+<tr>
+<th align="left">Method</th>
+</tr>
+<tr>
+<td align="left">POST</td>
+</tr>
+<tr>
+<th align="left">URL</th>
+</tr>
+<tr>
+<td align="left">/</td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+</tr>
+<tr>
+<td align="left">
+
+Action: `ActionName`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+...
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_URL encoded query string_
+
+</td>
+</tr>
+<tr>
+<th align="left">Example</th>
+</tr>
+<tr>
+<td align="left">
+
+`GET / HTTP/1.1`<br>`Host: iam.eu-central-1.s4.mega.io`<br><br>`Action=ListPolicies&Version=2010-05-08&AUTHPARAMS`
+
+</td>
+</tr>
+</table>
+
+# **3.2 S4 Managed Policies**
+
+S4 provides the following managed policies:
+
+<table>
+<tr>
+<th align="left">Name</th>
+<th align="left">Document</th>
+</tr>
+<tr>
+<td align="left">
+
+`AdministratorAccess`
+
+</td>
+<td align="left">
 
 ```
-cd existing_repo
-git remote add origin https://code.developers.mega.co.nz/apps/s4-specs.git
-git branch -M main
-git push -uf origin main
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "*",
+    "Resource": "*"
+  }
+}
 ```
 
-## Integrate with your tools
+</td>
+</tr>
+<tr>
+<td align="left">
 
-- [ ] [Set up project integrations](https://code.developers.mega.co.nz/apps/s4-specs/-/settings/integrations)
+`S3ListAccess`
 
-## Collaborate with your team
+</td>
+<td align="left">
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:List*",
+    "Resource": "*"
+  }
+}
+```
 
-## Test and Deploy
+</td>
+</tr>
+<tr>
+<td align="left">
 
-Use the built-in continuous integration in GitLab.
+`S3ReadAccess`
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+</td>
+<td align="left">
 
-***
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:List*",
+      "s3:Get*"
+    ],
+    "Resource": "*"
+  }
+}
+```
 
-# Editing this README
+</td>
+</tr>
+<tr>
+<td align="left">
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+`S3WriteAccess`
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+</td>
+<td align="left">
 
-## Name
-Choose a self-explaining name for your project.
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:Put*",
+      "s3:Create*"
+    ],
+    "Resource": "*"
+  }
+}
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+</td>
+</tr>
+<tr>
+<td align="left">
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+`S3DeleteAccess`
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+</td>
+<td align="left">
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:Delete*",
+    "Resource": "*"
+  }
+}
+```
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+</td>
+</tr>
+<tr>
+<td align="left">
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+`S3FullAccess`
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+</td>
+<td align="left">
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:*",
+    "Resource": "*"
+  }
+}
+```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+</td>
+</tr>
+<tr>
+<td align="left">
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+`S3BucketListAccess`
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+</td>
+<td align="left">
 
-## License
-For open source projects, say how it is licensed.
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:ListAllMyBuckets",
+    "Resource": "*"
+  }
+}
+```
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3BucketReadAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:ListAllMyBuckets",
+      "s3:GetBucket*"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3BucketWriteAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:CreateBucket",
+      "s3:PutBucket*"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3BucketDeleteAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:DeleteBucket*",
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3BucketFullAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:ListAllMyBuckets",
+      "s3:GetBucket*",
+      "s3:CreateBucket",
+      "s3:PutBucket*",
+      "s3:DeleteBucket*"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3ObjectListAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:ListBucket*",
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3ObjectReadAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:GetObject*",
+      "s3:ListMultipartUploadParts",
+      "s3:ListBucket*"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3ObjectWriteAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "s3:PutObject*",
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3ObjectDeleteAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:DeleteObject*",
+      "s3:AbortMultipartUpload"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`S3ObjectFullAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "s3:ListBucket*",
+      "s3:GetObject*",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObject*",
+      "s3:DeleteObject*",
+      "s3:AbortMultipartUpload"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`IAMListAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "iam:List*",
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`IAMReadAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "iam:Get*",
+      "iam:List*"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`IAMAttachDetachAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": [
+      "iam:Attach*",
+      "iam:Detach*"
+    ],
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+`IAMFullAccess`
+
+</td>
+<td align="left">
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": {
+    "Effect": "Allow",
+    "Action": "iam:*",
+    "Resource": "*"
+  }
+}
+```
+
+</td>
+</tr>
+</table>
+
+# **3.3. Services**
+
+# **3.3.1. Policies**
+
+## GetPolicy
+
+**ActionName**: GetPolicy
+
+### Request
+
+| Params | Supported
+| :--- | :---
+| PolicyArn (mandatory) |   &#128994; YES
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GetPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+  <GetPolicyResult>
+    <Policy>
+      <Arn>arn:aws:iam::aws:policy/AdministratorAccess</Arn>
+      <AttachmentCount>0</AttachmentCount>
+      <CreateDate>2022-07-29T20:05:50.000Z</CreateDate>
+      <UpdateDate>2022-07-29T20:05:50.000Z</UpdateDate>
+      <PolicyId>ADMINISTRATORACCESS</PolicyId>
+      <PolicyName>AdministratorAccess</PolicyName>
+      <DefaultVersionId>v1</DefaultVersionId>
+      <Path>/</Path>
+      <IsAttachable>true</IsAttachable>
+      <Description></Description>
+    </Policy>
+  </GetPolicyResult>
+  <ResponseMetadata>
+    <RequestId>0000000000000003</RequestId>
+  </ResponseMetadata>
+</GetPolicyResponse>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned in case of either the parameter PolicyArn missing from the request or if the ARN value is not valid or policy referenced by the given ARN is not found.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+```xml
+<Error>
+  <Code>InvalidArgument</Code>
+  <Message>PolicyArn</Message>
+  <Resource>/</Resource>
+  <RequestId>0000000000000010</RequestId>
+</Error>
+```
+
+</td>
+</tr>
+</table>
+
+## GetPolicyVersion
+
+**ActionName**: GetPolicyVersion
+
+### Request
+
+| Params | Supported
+| :--- | :---
+| PolicyArn (mandatory) | &#128994; YES
+| VersionId (mandatory) | &#128994; YES
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<GetPolicyVersionResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+
+  <GetPolicyVersionResult>
+    <PolicyVersion>
+      <Document>
+        %7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%7B%22Effect%22%3A%22Allow%22%2C%22Action%22%3A%22%2A%22%2C%22Resource%22%3A%22%2A%22%7D%7D
+      </Document>
+      <IsDefaultVersion>true</IsDefaultVersion>
+      <VersionId>v1</VersionId>
+      <CreateDate>2022-07-29T20:05:50.000Z</CreateDate>
+    </PolicyVersion>
+  </GetPolicyVersionResult>
+  <ResponseMetadata>
+    <RequestId>0000000000000017</RequestId>
+  </ResponseMetadata>
+</GetPolicyVersionResponse>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned if:
+
+-   The parameter PolicyArn is missing OR
+-   The ARN value is not valid OR
+-   Policy referenced by the given ARN is not found
+-   The parameter VersionId is missing
+-   The value of VersionId is not v1
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+```xml
+<Error>
+  <Code>InvalidArgument</Code>
+  <Message>PolicyArn</Message>
+  <Resource>/</Resource>
+  <RequestId>0000000000000010</RequestId>
+</Error>
+```
+
+</td>
+</tr>
+</table>
+
+## ListPolicies
+
+**ActionName**: ListPolicies
+
+### Request
+
+| Params | Supported
+| :--- | :---
+| Marker (optional) | &#128994; YES
+| MaxItems  _(optional)_ | &#128994; YES 
+| OnlyAttached  _(optional)_ | &#128308; NO
+| PathPrefix  _(optional)_ | &#128308; NO 
+| PolicyUsageFilter  _(optional)_ | &#128308; NO
+| Scope  _(optional)_ | &#128308; NO
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ListPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+  <ListPoliciesResult>
+    <IsTruncated>false</IsTruncated>
+    <Policies>
+      <member>
+        <Arn>arn:aws:iam::aws:policy/FullAccess</Arn>
+        <AttachmentCount>0</AttachmentCount>
+        <CreateDate>2017-05-15T02:57:50.000Z</CreateDate>
+        <UpdateDate>2017-05-15T02:57:50.000Z</UpdateDate>
+        <PolicyId>FULLACCESS</PolicyId>
+        <PolicyName>FullAccess</PolicyName>
+        <DefaultVersionId>v1</DefaultVersionId>
+        <Path>/</Path>
+        <IsAttachable>true</IsAttachable>
+      </member>
+       ...
+    </Policies>
+  </ListPoliciesResult>
+  <ResponseMetadata>
+    <RequestId>0000000000000001</RequestId>
+  </ResponseMetadata>
+</ListPoliciesResponse>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned in case Marker or MaxItems is specified but it is not integer or out of range.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## ListAttachedUserPolicies \| ListAttachedGroupPolicies
+
+**ActionName**: ListAttachedUserPolicies or ListAttachedGroupPolicies
+
+### Request
+
+| Params | Supported
+| :--- | :---
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| Marker _(optional)_ | &#128994; YES
+| MaxItems  _(optional)_ | &#128994; YES
+| PathPrefix  _(optional)_ | &#128308; NO
+  
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<ListAttachedUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/"> -- or ListAttachedGroupPoliciesResponse
+  <ListAttachedGroupPoliciesResult> -- or ListAttachedGroupPoliciesResponse
+    <AttachedPolicies>
+      <member>
+        <PolicyName>FullAccess</PolicyName>
+        <PolicyArn>arn:aws:iam::aws:policy/FullAccess</PolicyArn>
+      </member>
+    </AttachedPolicies>
+    <IsTruncated>false</IsTruncated>
+  </ListAttachedGroupPoliciesResult>
+  <ResponseMetadata>
+    <RequestId>0000000000000001</RequestId>
+  </ResponseMetadata>
+</ListAttachedGroupPoliciesResponse>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+(1) Returned in case \<UserName\>/\<GroupName\> does not exist in current account.
+
+(2) Returned in case Marker or MaxItems is specified but it is not integer or out of range.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### AccountProblem
+
+Returned due to technical reasons related to the  **internal representation**  of the account information.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+## AttachUserPolicy \| AttachGroupPolicy
+
+**ActionName**: AttachUserPolicy or AttachGroupPolicy
+
+### Request
+
+| Params | Supported
+| :--- | :---
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| PolicyArn _(mandatory)_ | &#128994; YES
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<AttachUserPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/"> – or AttachGroupPolicyResponse
+  <ResponseMetadata>
+    <RequestId>0000000000000001</RequestId>
+  </ResponseMetadata>
+</AttachUserPolicyResponse>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned in case \<PolicyArn\> does not exist.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+----------
+
+## DetachUserPolicy \| DetachGroupPolicy
+
+**ActionName**: DetachUserPolicy or DetachGroupPolicy
+
+### Request
+
+| Params | Supported
+| :--- | :---
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| PolicyArn _(mandatory)_ | &#128994; YES
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<DetachUserPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/"> – or DetachGroupPolicyResponse
+  <ResponseMetadata>
+    <RequestId>0000000000000001</RequestId>
+  </ResponseMetadata>
+</detachUserPolicyResponse>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+#### InvalidArgument
+
+Returned in case \<PolicyArn\> does not exist.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
+
+#### InternalError
+
+Returned due to technical reasons.
+
+<table>
+<tr>
+<th align="left">Status Code</th>
+</tr>
+<tr>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+</tr>
+<tr>
+<td align="left">
+
+_\<default error message\>_
+
+</td>
+</tr>
+</table>
