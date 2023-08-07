@@ -7,14 +7,15 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [1.3. Errors](#13-errors)
 -   [2. S3 API](#2-s3-api)
     -   [2.1. Conventions](#21-conventions)
-        -   [2.1.1. Bucket identification](#211-bucket-identification)
+        -   [2.1.1. Bucket Identification](#211-bucket-identification)
             -   [Path Style](#path-style)
             -   [Virtual-Hosted Style](#virtual-hosted-style)
-        -   [2.1.2. Object identification: key](#212-object-identification-key)
+        -   [2.1.2. Bucket Name Validation](#212-bucket-name-validation)
+        -   [2.1.3. Object Identification: key](#213-object-identification-key)
             -   [Path Style](#path-style-1)
             -   [Virtual-Hosted Style](#virtual-hosted-style-1)
-        -   [2.1.3. Object Key Validation](#213-object-key-validation)
-        -   [2.1.4. Bucket and Object ownership](#214-bucket-and-object-ownership)
+        -   [2.1.4. Object Key Validation](#214-object-key-validation)
+        -   [2.1.5. Bucket and Object Ownership](#215-bucket-and-object-ownership)
     -   [2.2. Services](#22-services)
         -   [2.2.1. Buckets](#221-buckets)
             -   [ListBuckets](#listbuckets)
@@ -65,7 +66,7 @@ This document describes S4 coverage of IAM and S3 APIs.
                     -   [BadDigest](#baddigest)
                     -   [MethodNotAllowed](#methodnotallowed)
                     -   [InternalError](#internalerror-4)
-                -   [Restrictions in object name (i.e. resource Key)](#restrictions-in-object-name-ie-resource-key)
+                -   [Restrictions on object key](#restrictions-on-object-key)
             -   [CopyObject](#copyobject)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
@@ -76,10 +77,10 @@ This document describes S4 coverage of IAM and S3 APIs.
                     -   [InvalidStorageClass](#invalidstorageclass)
                     -   [AccessDenied](#accessdenied)
                     -   [Internal Error](#internal-error)
-                -   [Restrictions in object name (i.e. resource)](#restrictions-in-object-name-ie-resource)
+                -   [Restrictions on object key](#restrictions-on-object-key-1)
             -   [GetObject](#getobject)
                 -   [Request](#request-8)
-                -   [Restrictions in object name (i.e. resource)](#restrictions-in-object-name-ie-resource-1)
+                -   [Restrictions on object key](#restrictions-on-object-key-2)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
                     -   [NoSuchKey](#nosuchkey-1)
@@ -102,7 +103,7 @@ This document describes S4 coverage of IAM and S3 APIs.
                     -   [ServiceUnavailable](#serviceunavailable)
                     -   [AccountProblem](#accountproblem)
                     -   [InternalError](#internalerror-5)
-                -   [Restrictions in object name (i.e. resource Key)](#restrictions-in-object-name-ie-resource-key-1)
+                -   [Restrictions on object key](#restrictions-on-object-key-3)
             -   [UploadPart](#uploadpart)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
@@ -252,7 +253,19 @@ The argument \<bucket_name\> is specified as part of the Host in the HTTP reques
 `GET / HTTP/1.1.`  
 `Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
 
-# **2.1.2. Object identification: key**
+# **2.1.2. Bucket Name Validation**
+
+* Bucket name must not be  `.`
+
+* Bucket name must not be  `..`
+
+* Bucket names must not contain `/`
+
+If validation fails, an  **AccessDenied**  error is returned.
+
+See additional restrictions imposed on bucket names by the CreateBucket and related services [here](#restrictions-on-bucket-name).
+
+# **2.1.3. Object identification: key**
 
 S3 services involving object manipulation or retrieval requires the object to be identified by mean of a string known as  `<key>`. It is specified as part of the URL:
 
@@ -266,17 +279,19 @@ S3 services involving object manipulation or retrieval requires the object to be
 `GET /<key> HTTP/1.1.`  
 `Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
 
-# **2.1.3. Object Key Validation**
+# **2.1.4. Object Key Validation**
 
-Object keys must not be  `..`
+* Object key must not be  `..`
 
-Object keys must not begin with  `../`  or end with  `/..`
+* Object keys must not begin with  `../`  or end with  `/..`
 
-Object keys must not contain  `/./`  nor  `/../`
+* Object keys must not contain  `/./`  nor  `/../`
 
 If validation fails, an  **AccessDenied**  error is returned.
+
+See additional restrictions imposed on object keys by the PutObject and related services [here](#restrictions-on-object-key).
   
-# **2.1.4. Bucket and Object Ownership**
+# **2.1.5. Bucket and Object Ownership**
 
 Every bucket and every object, despite who created them, is owned by the canonical user (root account).
 
@@ -542,6 +557,8 @@ x-amz-object-ownership: `ObjectOwnership`
 
 ### Restrictions on Bucket Name
 
+In addition to the restrictions listed in the [bucket name validation](#212-bucket-name-validation) section, the CreateBucket service also imposes the following:
+
 - Bucket names must be between  `3`  (min) and  `63`  (max) characters long
 
 - Bucket names can consist only of lowercase letters, numbers, dots  `.`, and hyphens  `-`
@@ -602,16 +619,6 @@ Returned in case there is a bucket with `<bucket_name>` found in place when tryi
 <tr>
 <td align="left">409 Conflict</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### BucketAlreadyExists and S3 Discrepancies
@@ -629,16 +636,6 @@ Returned in case `<bucket_name>` does not satisfy restrictions.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -651,16 +648,6 @@ Returned due to internal technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -737,7 +724,7 @@ x-amz-expected-bucket-owner:  `BucketOwner`
 
 ### Restrictions on Bucket Name
 
-Same as for CreateBucket
+The same [requirements](#restrictions-on-bucket-name) for bucket names listed in the CreateBucket service section apply.
 
 ### Success Response
 
@@ -775,16 +762,6 @@ Returned in case `bucket_name` does not satisfy restrictions.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -798,16 +775,6 @@ Returned due to internal technical reason.
 <tr>
 <td align="left">500 Internal Server Error</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### BucketNotEmpty
@@ -820,16 +787,6 @@ Returned if called on a non-empty bucket
 </tr>
 <tr>
 <td align="left">409 Conflict</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -906,7 +863,7 @@ x-amz-expected-bucket-owner:  `BucketOwner`
 
 ### Restrictions on Bucket Name
 
-Same as for CreateBucket
+The same [requirements](#restrictions-on-bucket-name) for bucket names listed in the CreateBucket service section apply.
 
 ### Success Response
 
@@ -943,16 +900,6 @@ Returned in case `<bucket_name>` does not satisfy restrictions.
 </tr>
 <tr>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -1137,16 +1084,6 @@ Returned in case \<max-keys\> argument has a wrong format.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -1159,16 +1096,6 @@ Returned due to technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -1354,16 +1281,6 @@ Returned in case
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -1376,16 +1293,6 @@ Returned due to technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -2071,16 +1978,6 @@ This may happen in case of chunked payload when the provided header does not hav
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### BadDigest
@@ -2093,16 +1990,6 @@ Returned if the Content-MD5 does not match the MD5 computed while uploading.
 </tr>
 <tr>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -2117,16 +2004,6 @@ Returned in case the new object name does not validate constraints (see below)
 <tr>
 <td align="left">405 Method Not Allowed</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -2140,19 +2017,11 @@ Returned in case the upload failed to complete
 <tr>
 <td align="left">500 Internal Server Error</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
-### Restrictions in object name (i.e. resource Key)
+### Restrictions on object key
+
+In addition to the restrictions listed in the [object key validation](#214-object-key-validation) section, the PutObject service also imposes the following:
 
 - Object keys must be between  `1`  (min) and  `1024`  (max) characters long
 - Object keys must not contain non-printable ASCII characters (`128–255`  decimal characters)
@@ -2837,16 +2706,6 @@ Returned if x-amz-copy-source-path is empty or does not denote both bucket and r
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### NoSuchBucket
@@ -2859,16 +2718,6 @@ Returned if the source bucket does not exist
 </tr>
 <tr>
 <td align="left">404 Not Found</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -2883,16 +2732,6 @@ Returned if the source key does not exist
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidStorageClass
@@ -2905,16 +2744,6 @@ Returned if a storage class other than STANDARD is used in the request
 </tr>
 <tr>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -2929,16 +2758,6 @@ In addition to usual policy validation errors, this is returned if policy valida
 <tr>
 <td align="left">403 Forbidden</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### Internal Error
@@ -2952,21 +2771,11 @@ Returned in the event of internal API error.
 <tr>
 <td align="left">500 Internal Server Error</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
-### Restrictions in object name (i.e. resource)
+### Restrictions on object key
 
-The same requirements for object keys listed in the PutObject service implementation details apply.
+The same [requirements](#restrictions-on-object-key) for object keys listed in the PutObject service section apply.
 
 If validation fails, the  `AccessDenied` error is returned.
 
@@ -3227,9 +3036,9 @@ Range: Range
 </tr>
 </table>
 
-### Restrictions in object name (i.e. resource)
+### Restrictions on object key
 
-The same object key requirements listed in PutObject apply.
+The same [requirements](#restrictions-on-object-key) for object keys listed in the PutObject service section apply.
 
 If validation fails, an  `AccessDenied` error is returned.
 
@@ -3375,16 +3184,6 @@ Returned if the key does not name an object in the bucket or the key is not a fi
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidRange
@@ -3397,16 +3196,6 @@ Returned if the request has a range header which is not satisfiable for the enti
 </tr>
 <tr>
 <td align="left">416 Requested Range Not Satisfiable</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -3745,16 +3534,6 @@ Returned if the key does not name an object in the bucket or the key is not a fi
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidRange
@@ -3767,16 +3546,6 @@ Returned if the request has a range header which is not satisfiable for the enti
 </tr>
 <tr>
 <td align="left">416 Requested Range Not Satisfiable</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -3964,16 +3733,6 @@ Returned if the bucket which the object is attempted to be deleted from does not
 </tr>
 <tr>
 <td align="left">404 Not Found</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -4531,16 +4290,6 @@ Returned in case server is too crowded.
 <tr>
 <td align="left">503 Service Unavailable</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### AccountProblem
@@ -4553,16 +4302,6 @@ Returned if user has exceed quota.
 </tr>
 <tr>
 <td align="left">403 Forbidden</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -4577,21 +4316,12 @@ Returned in case the request failed to complete
 <tr>
 <td align="left">500 Internal Server Error</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
-### Restrictions in object name (i.e. resource Key)
+### Restrictions on object key
 
-The same object key requirements listed in PutObject apply.  
+The same [requirements](#restrictions-on-object-key) for object keys listed in the PutObject service section apply.
+
 If validation fails, an  `AccessDenied` error is returned.
 
 ## UploadPart
@@ -4982,16 +4712,6 @@ Returned if the Content-MD5 does not match the MD5 computed while uploading.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidDigest
@@ -5005,16 +4725,6 @@ Returned in case header  `Content-MD5`  is not in a valid MD5 base64 format.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### ServiceUnavailable
@@ -5027,16 +4737,6 @@ Returned in case server is too crowded.
 </tr>
 <tr>
 <td align="left">503 Service Unavailable</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -5054,16 +4754,6 @@ _\<default error message\>_
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### EntityTooSmall
@@ -5078,16 +4768,6 @@ Returned in case the size of this (or any previously uploaded) part is smaller t
 </tr>
 <tr>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_  
-
-</td>
 </tr>
 </table>
 
@@ -5104,16 +4784,6 @@ Returned if:
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_  
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -5126,16 +4796,6 @@ Returned in case the request failed to complete, e.g. storage timeout, etc
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -5440,16 +5100,6 @@ Returned in case the request body is not a valid xml message, or does not specif
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidRequest
@@ -5463,16 +5113,6 @@ Returned in case the request body does not specify any valid part info.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidPartOrder
@@ -5485,16 +5125,6 @@ Returned if in the request body, the part list was not in ascending order. The p
 </tr>
 <tr>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -5513,16 +5143,6 @@ Returned if one of the following conditions is true:
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidPart
@@ -5539,16 +5159,6 @@ Returned for one of the following reasons:
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -5561,16 +5171,6 @@ Returned in case the request failed to complete, e.g. failed to retrieve the upl
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -5849,16 +5449,6 @@ Returned in case header  `Content-MD5`  is missing.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### BadDigest
@@ -5872,16 +5462,6 @@ Returned in case  `Content-MD5`  header value does not match computed MD5.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -5894,16 +5474,6 @@ Returned due to technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -6014,16 +5584,6 @@ Returned in case  `<bucket_name>`  does not have an inline policy document.
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InvalidPolicyDocument
@@ -6036,16 +5596,6 @@ Mandatory JSON property is missing.
 </tr>
 <tr>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -6156,16 +5706,6 @@ Returned in case  `<bucket_name>`  does not have an inline policy document.
 <tr>
 <td align="left">404 Not Found</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -6178,16 +5718,6 @@ Returned due to technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -7069,16 +6599,6 @@ Returned in case Marker or MaxItems is specified but it is not integer or out of
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 ## ListAttachedUserPolicies \| ListAttachedGroupPolicies
@@ -7153,16 +6673,6 @@ _\<default error message\>_
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### AccountProblem
@@ -7175,16 +6685,6 @@ Returned due to technical reasons related to the  **internal representation**  o
 </tr>
 <tr>
 <td align="left">403 Forbidden</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -7247,16 +6747,6 @@ Returned in case \<PolicyArn\> does not exist.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -7269,16 +6759,6 @@ Returned due to technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
 
@@ -7343,16 +6823,6 @@ Returned in case \<PolicyArn\> does not exist.
 <tr>
 <td align="left">400 Bad Request</td>
 </tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
-</tr>
 </table>
 
 #### InternalError
@@ -7365,15 +6835,5 @@ Returned due to technical reasons.
 </tr>
 <tr>
 <td align="left">500 Internal Server Error</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-_\<default error message\>_
-
-</td>
 </tr>
 </table>
