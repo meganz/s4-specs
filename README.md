@@ -5,6 +5,10 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [1.1. Account Identification](#11-account-identification)
     -   [1.2. Endpoints](#12-endpoints)
     -   [1.3. Errors](#13-errors)
+        -   [1.3.1. S3 Error Format](#131-s3-error-format)
+        -   [1.3.2. Common Errors](#132-common-errors)
+            -   [Service preamble](#service-preamble)
+            -   [During whole service lifetime](#during-whole-service-lifetime)
 -   [2. S3 API](#2-s3-api)
     -   [2.1. Conventions](#21-conventions)
         -   [2.1.1. Bucket Identification](#211-bucket-identification)
@@ -217,6 +221,7 @@ Please note the endpoint [g.s4.mega.io](http://g.s4.mega.io/) is also available 
 Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
 
 # **1.3. Errors**
+# **1.3.1. S3 Error Format**
 S4 meets S3 [error formatting](https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html). e.g.:
 
 ```xml
@@ -230,6 +235,136 @@ S4 meets S3 [error formatting](https://docs.aws.amazon.com/AmazonS3/latest/API/E
 ```
 
 The value of Code is one of the standard IAM or S3 error codes. The value of Message is a human-readable indication of what the origin of the problem is.
+
+# **1.3.2. Common Errors**
+
+### Service preamble
+
+Errors that may occur in any S4 service during common service initialization (parsing, authorization and policy validation). Note that these errors can also occur due to additional causes specific to the distinct services. Those are listed at each service specs.
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">InvalidURI</td>
+<td align="left">It happens due to a wrong domain (i.e. wrong Host header) format.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">NoSuchAccessPoint</td>
+<td align="left">The Account Id specified in host header has a correct format but it doesn't match any existing account. There might be additional reasons such as blocked account, etc.</td>
+<td align="left">400 Not Found</td>
+</tr>
+<tr>
+<td align="left">InvalidAction</td>
+<td align="left">Returned in case URL fails to be parsed.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">InternalError</td>
+<td align="left">The Account Id specified in host header has a correct format but due to technical reasons the server was not able to handle the request.</td>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<td align="left">AccountProblem</td>
+<td align="left">A logical problem in the internal representation of the account is preventing the service to be executed. Technical support is required.</td>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">IncompleteSignature</td>
+<td align="left">Missing or unexpected data while (1) building canonical request or (2) parsing credentials.</td>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">InternalFailure</td>
+<td align="left">Internal S4 failure</td>
+<td align="left">500 Internal Server Error</td>
+</tr>
+<tr>
+<td align="left">InvalidAccessKeyId</td>
+<td align="left">The request cannot complete because the supplied Access Key is not valid.</td>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">InvalidRequest</td>
+<td align="left">The request cannot be completed because of an error in the expected request format. Possible causes:<br><br>
+(1) Authorization header does not start with AWS4-HMAC-SHA256<br>
+(2) Unexpected service in authorization header data or authentication string<br>
+(3) Issue with chunked header or payload<br>
+(4) Invalid format for certain x-amz- headers<br>
+(5) Expired URL</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">MissingParameter</td>
+<td align="left">Missing parameter expected in (1) request URI or (2) headers.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">MissingSecurityHeader</td>
+<td align="left">Missing or wrong header involved in authorization.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">SignatureDoesNotMatch</td>
+<td align="left">Declared request signature does not match the computed one.<br><br>
+(1) Early detection of signature mismatch (accounting for headers only)<br>
+(2) Signature mismatch in presigned URL<br>
+(3) Body is signed and some chunk signature mismatches the computed one.<br>
+(4) Body is signed and at the end of stream, an error on signature calculation was detected.</td>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">AccessDenied</td>
+<td align="left">The request cannot proceed due to an authorization or policy validation problems (i.e. access not allowed by policies).</td>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">RequestTimeTooSkewed</td>
+<td align="left">The difference between the request time and the server's time is too large.</td>
+<td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">ValidationError</td>
+<td align="left">Input validation failure when processing request such as header parsing for request signature.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">AuthorizationQueryParametersError</td>
+<td align="left">Error authentication data when using auth query parameters instead of auth headers, (e.g. the presigned urls).</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">NoSuchBucket</td>
+<td align="left">Returned if the specified bucket does not exist.</td>
+<td align="left">404 Not Found</td>
+</tr>
+<tr>
+<td align="left">NoSuchKey</td>
+<td align="left">Returned if the specified key does not exist.</td>
+<td align="left">404 Not Found</td>
+</tr>
+</table>
+
+### During whole service lifetime
+
+Errors that may occur at any moment in any service.
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">RequestTimeout</td>
+<td align="left">Either the client has been unresponsive for too long or the server experienced problems preventing it to serve the response on time.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+</table>
 
 # **2. S3 API**
 
