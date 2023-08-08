@@ -32,54 +32,34 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Success Response](#success-response-1)
                 -   [Errors](#errors-1)
                     -   [BucketAlreadyExists and S3 Discrepancies](#bucketalreadyexists-and-s3-discrepancies)
-                    -   [InvalidBucketName](#invalidbucketname)
-                    -   [InternalError](#internalerror)
             -   [DeleteBucket](#deletebucket)
                 -   [Request](#request-2)
                 -   [Restrictions on Bucket Name](#restrictions-on-bucket-name-1)
                 -   [Success Response](#success-response-2)
                 -   [Errors](#errors-2)
-                    -   [InvalidBucketName](#invalidbucketname-1)
-                    -   [InternalError](#internalerror-1)
-                    -   [BucketNotEmpty](#bucketnotempty)
             -   [HeadBucket](#headbucket)
                 -   [Request](#request-3)
                 -   [Restrictions on Bucket Name](#restrictions-on-bucket-name-2)
                 -   [Success Response](#success-response-3)
                 -   [Errors](#errors-3)
-                    -   [InvalidBucketName](#invalidbucketname-2)
         -   [2.2.2. Objects](#222-objects)
             -   [ListObjects](#listobjects)
                 -   [Request](#request-4)
                 -   [Success Response](#success-response-4)
                 -   [Errors](#errors-4)
-                    -   [InvalidArgument](#invalidargument)
-                    -   [InternalError](#internalerror-2)
             -   [ListObjectsV2](#listobjectsv2)
                 -   [Request](#request-5)
                 -   [Success Response](#success-response-5)
                 -   [Errors](#errors-5)
-                    -   [InvalidArgument](#invalidargument-1)
-                    -   [InternalError](#internalerror-3)
             -   [PutObject](#putobject)
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-                    -   [InvalidArgument](#invalidargument-2)
-                    -   [BadDigest](#baddigest)
-                    -   [MethodNotAllowed](#methodnotallowed)
-                    -   [InternalError](#internalerror-4)
                 -   [Restrictions on object key](#restrictions-on-object-key)
             -   [CopyObject](#copyobject)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-                    -   [InvalidArgument](#invalidargument-3)
-                    -   [NoSuchBucket](#nosuchbucket)
-                    -   [NoSuchKey](#nosuchkey)
-                    -   [InvalidStorageClass](#invalidstorageclass)
-                    -   [AccessDenied](#accessdenied)
-                    -   [Internal Error](#internal-error)
                 -   [Restrictions on object key](#restrictions-on-object-key-1)
             -   [GetObject](#getobject)
                 -   [Request](#request-8)
@@ -766,7 +746,11 @@ Returned in case there is a bucket with `<bucket_name>` found in place when tryi
 </td>
 </tr>
 <tr>
-<td align="left">InvalidBucketName</td>
+<td align="left">
+
+InvalidBucketName
+
+</td>
 <td align="left">
 
 Returned in case `<bucket_name>` does not satisfy restrictions.
@@ -1044,16 +1028,28 @@ The same [requirements](#restrictions-on-bucket-name) for bucket names listed in
 
 ### Errors
 
-#### InvalidBucketName
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidBucketName
+
+</td>
+<td align="left">
 
 Returned in case `<bucket_name>` does not satisfy restrictions.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
 </tr>
 </table>
 
@@ -1227,35 +1223,47 @@ Location: Location
 
 ### Errors
 
-#### InvalidArgument
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
 
 Returned in case \<max-keys\> argument has a wrong format.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
+<tr>
+<td align="left">
 
-#### InternalError
+InternalError
+
+</td>
+<td align="left">
 
 Returned due to technical reasons.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
 ## ListObjectsV2
 
-List objects in  `<bucket_name>`  .
+List objects in  `<bucket_name>` .
 
 ### Request
 
@@ -1421,32 +1429,48 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner`
 
 ### Errors
 
-#### InvalidArgument
-
-Returned in case
-
-1) \<max-keys\> argument has a wrong format.
-2) \<continuation-token\> cannot be decoded or points out of bounds
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+<td align="left">
 
-#### InternalError
+InvalidArgument
+
+</td>
+<td align="left">
+
+Returned in case:
+
+1. \<max-keys\> argument has a wrong format.
+1. \<continuation-token\> cannot be decoded or points out of bounds
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
 
 Returned due to technical reasons.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
@@ -2116,60 +2140,83 @@ x-amz-version-id
 
 ### Errors
 
-#### InvalidArgument
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
 
 Returned in cases where there are invalid/missing arguments in the request. Particularly:  
-1) If using chunked payload, and _`x-amz-decoded-content-length`_ is missing.
-
-2) If using chunked payload, and _`x-amz-decoded-content-length`_  is not valid.
+1. If using chunked payload, and _`x-amz-decoded-content-length`_ is missing.
+1. If using chunked payload, and _`x-amz-decoded-content-length`_  is not valid.
 
 This may happen in case of chunked payload when the provided header does not have a valid value.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### BadDigest
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+BadDigest
+
+</td>
+<td align="left">
 
 Returned if the Content-MD5 does not match the MD5 computed while uploading.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### MethodNotAllowed
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+MethodNotAllowed
+
+</td>
+<td align="left">
 
 Returned in case the new object name does not validate constraints (see below)
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">405 Method Not Allowed</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InternalError
+405 Method Not Allowed
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
 
 Returned in case the upload failed to complete
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
@@ -2849,80 +2896,40 @@ x-amz-request-charged
 
 ### Errors
 
-#### InvalidArgument
-
-Returned if x-amz-copy-source-path is empty or does not denote both bucket and resource.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">InvalidArgument</td>
+<td align="left">Returned if x-amz-copy-source-path is empty or does not denote both bucket and resource.</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
-
-#### NoSuchBucket
-
-Returned if the source bucket does not exist
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">NoSuchBucket</td>
+<td align="left">Returned if the source bucket does not exist.</td>
 <td align="left">404 Not Found</td>
 </tr>
-</table>
-
-#### NoSuchKey
-
-Returned if the source key does not exist
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">NoSuchKey</td>
+<td align="left">Returned if the source key does not exist.</td>
 <td align="left">404 Not Found</td>
 </tr>
-</table>
-
-#### InvalidStorageClass
-
-Returned if a storage class other than STANDARD is used in the request
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">InvalidStorageClass</td>
+<td align="left">Returned if a storage class other than STANDARD is used in the request.</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
-
-#### AccessDenied
-
-In addition to usual policy validation errors, this is returned if policy validation fails on the copy source
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">AccessDenied</td>
+<td align="left">In addition to usual policy validation errors, this is returned if policy validation fails on the copy source.</td>
 <td align="left">403 Forbidden</td>
 </tr>
-</table>
-
-#### Internal Error
-
-Returned in the event of internal API error.
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">Internal Error</td>
+<td align="left">Returned in the event of internal API error.</td>
 <td align="left">500 Internal Server Error</td>
 </tr>
 </table>
