@@ -31,7 +31,6 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Restrictions on Bucket Name](#restrictions-on-bucket-name)
                 -   [Success Response](#success-response-1)
                 -   [Errors](#errors-1)
-                    -   [BucketAlreadyOwnedByYou](#bucketalreadyownedbyyou)
                     -   [BucketAlreadyExists and S3 Discrepancies](#bucketalreadyexists-and-s3-discrepancies)
                     -   [InvalidBucketName](#invalidbucketname)
                     -   [InternalError](#internalerror)
@@ -743,48 +742,52 @@ Location: Location
 
 ### Errors
 
-#### BucketAlreadyOwnedByYou
-
-Returned in case there is a bucket with `<bucket_name>` found in place when trying to create a new folder or new folder creation succeeds but the node is then replaced by a different one
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
-<td align="left">409 Conflict</td>
+<td align="left">
+
+BucketAlreadyOwnedByYou
+
+</td>
+<td align="left">
+
+Returned in case there is a bucket with `<bucket_name>` found in place when trying to create a new folder or new folder creation succeeds but the node is then replaced by a different one.
+
+</td>
+<td align="left">
+
+409 Conflict
+
+</td>
+</tr>
+<tr>
+<td align="left">InvalidBucketName</td>
+<td align="left">
+
+Returned in case `<bucket_name>` does not satisfy restrictions.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">InternalError</td>
+<td align="left">Returned due to internal technical reasons.</td>
+<td align="left">500 Internal Server Error</td>
 </tr>
 </table>
 
 #### BucketAlreadyExists and S3 Discrepancies
 
 The S3 standard behavior is to only return AlreadyOwnedByYou if the bucket exists but had already been created in a region different from the requested one with the request succeeding otherwise. S4 does not support this behavior as it is considered to be confusing. Moreover, S4 does not have globally shared bucket namespaces like S3 does. In S4, the owner of a bucket corresponds to the owner of an account. Thus, an error indicating a duplicate bucket is _always_ a BucketAlreadyOwnedByYou error. S4 never returns BucketAlreadyExists.
-
-#### InvalidBucketName
-
-Returned in case `<bucket_name>` does not satisfy restrictions.
-
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
-
-#### InternalError
-
-Returned due to internal technical reasons.
-
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
-</tr>
-</table>
 
 ## DeleteBucket
 
@@ -886,42 +889,58 @@ The same [requirements](#restrictions-on-bucket-name) for bucket names listed in
 
 ### Errors
 
-#### InvalidBucketName
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidBucketName
+
+</td>
+<td align="left">
 
 Returned in case `bucket_name` does not satisfy restrictions.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InternalError
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">InternalError</td>
+<td align="left">
 
 Returned due to internal technical reason.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 <tr>
-<td align="left">500 Internal Server Error</td>
-</tr>
-</table>
+<td align="left">
 
-#### BucketNotEmpty
+BucketNotEmpty
 
-Returned if called on a non-empty bucket
+</td>
+<td align="left">
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">409 Conflict</td>
+Returned if called on a non-empty bucket.
+
+</td>
+<td align="left">
+
+409 Conflict
+
+</td>
 </tr>
 </table>
 
