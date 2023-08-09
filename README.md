@@ -66,71 +66,44 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Restrictions on object key](#restrictions-on-object-key-2)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
-                    -   [NoSuchKey](#nosuchkey-1)
-                    -   [InvalidRange](#invalidrange)
             -   [HeadObject](#headobject)
                 -   [Request](#request-9)
                 -   [Success Response](#success-response-9)
                 -   [Errors](#errors-9)
-                    -   [NoSuchKey](#nosuchkey-2)
-                    -   [InvalidRange](#invalidrange-1)
             -   [DeleteObject](#deleteobject)
                 -   [Request](#request-10)
                 -   [Success Response](#success-response-10)
                 -   [Errors](#errors-10)
-                    - [NoSuchBucket](#nosuchbucket-1)
             -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-                    -   [ServiceUnavailable](#serviceunavailable)
-                    -   [AccountProblem](#accountproblem)
-                    -   [InternalError](#internalerror-5)
                 -   [Restrictions on object key](#restrictions-on-object-key-3)
             -   [UploadPart](#uploadpart)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-                    -   [BadDigest](#baddigest-1)
-                    -   [InvalidDigest](#invaliddigest)
-                    -   [ServiceUnavailable](#serviceunavailable-1)
-                    -   [InvalidPart](#invalidpart)
-                    -   [InternalError](#internalerror-6)
             -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-                    -   [MalformedXML](#malformedxml)
-                    -   [InvalidRequest](#invalidrequest)
-                    -   [InvalidPartOrder](#invalidpartorder)
-                    -   [NoSuchUpload](#nosuchupload)
-                    -   [InvalidPart](#invalidpart)
-                    -   [InternalError](#internalerror-7)
             -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-                    -   [NoSuchUpload](#nosuchupload-1)
         -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
             -   [PutBucketPolicy](#putbucketpolicy)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-                    -   [InvalidDigest](#invaliddigest-1)
-                    -   [BadDigest](#baddigest-2)
-                    -   [InternalError](#internalerror-8)
             -   [GetBucketPolicy](#getbucketpolicy)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-                    -   [NoSuchBucketPolicy](#nosuchbucketpolicy)
-                    -   [InvalidPolicyDocument](#invalidpolicydocument)
             -   [DeleteBucketPolicy](#deletebucketpolicy)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
-                    -   [NoSuchBucketPolicy](#nosuchbucketpolicy-1)
-                    -   [InternalError](#internalerror-9)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -147,35 +120,26 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-18)
                 -   [Success Response](#success-response-18)
                 -   [Errors](#errors-18)
-                    -   [InvalidArgument](#invalidargument-4)
             -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-19)
                 -   [Success Response](#success-response-19)
                 -   [Errors](#errors-19)
-                    -   [InvalidArgument](#invalidargument-5)
             -   [ListPolicies](#listpolicies)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
-                    -   [InvalidArgument](#invalidargument-6)
             -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies-listattachedgrouppolicies)
                 -   [Request](#request-21)
                 -   [Success Response](#success-response-21)
                 -   [Errors](#errors-21)
-                    -   [InvalidArgument](#invalidargument-7)
-                    -   [AccountProblem](#accountproblem-1)
             -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy-attachgrouppolicy)
                 -   [Request](#request-22)
                 -   [Success Response](#success-response-22)
                 -   [Errors](#errors-22)
-                    -   [InvalidArgument](#invalidargument-8)
-                    -   [InternalError](#internalerror-10)
             -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy-detachgrouppolicy)
                 -   [Request](#request-23)
                 -   [Success Response](#success-response-23)
                 -   [Errors](#errors-23)
-                    -   [InvalidArgument](#invalidargument-9)
-                    -   [InternalError](#internalerror-11)
 
 # **1. Common Details**
 
@@ -3334,28 +3298,20 @@ Last-Modified
 
 ### Errors
 
-#### NoSuchKey
-
-Returned if the key does not name an object in the bucket or the key is not a file.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">NoSuchKey</td>
+<td align="left">Returned if the key does not name an object in the bucket or the key is not a file.</td>
 <td align="left">404 Not Found</td>
 </tr>
-</table>
-
-#### InvalidRange
-
-Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">InvalidRange</td>
+<td align="left">Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.</td>
 <td align="left">416 Requested Range Not Satisfiable</td>
 </tr>
 </table>
@@ -3684,28 +3640,20 @@ x-amz-storage-class
 
 ### Errors
 
-#### NoSuchKey
-
-Returned if the key does not name an object in the bucket or the key is not a file
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">NoSuchKey</td>
+<td align="left">Returned if the key does not name an object in the bucket or the key is not a file.</td>
 <td align="left">404 Not Found</td>
 </tr>
-</table>
-
-#### InvalidRange
-
-Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">InvalidRange</td>
+<td align="left">Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.</td>
 <td align="left">416 Requested Range Not Satisfiable</td>
 </tr>
 </table>
@@ -3884,15 +3832,15 @@ x-amz-version-id
 
 Note that if the object with the given key does not exist, `DeleteObject` still returns `204 NoContent`.
 
-#### NoSuchBucket
-
-Returned if the bucket which the object is attempted to be deleted from does not exist.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">NoSuchBucket</td>
+<td align="left">Returned if the bucket which the object is attempted to be deleted from does not exist.</td>
 <td align="left">404 Not Found</td>
 </tr>
 </table>
@@ -4440,41 +4388,25 @@ x-amz-checksum-algorithm
 
 ### Errors
 
-#### ServiceUnavailable
-
-Returned in case server is too crowded.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">ServiceUnavailable</td>
+<td align="left">Returned in case server is too crowded.</td>
 <td align="left">503 Service Unavailable</td>
 </tr>
-</table>
-
-#### AccountProblem
-
-Returned if user has exceed quota.
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">AccountProblem</td>
+<td align="left">Returned if user has exceed quota.</td>
 <td align="left">403 Forbidden</td>
 </tr>
-</table>
-
-#### InternalError
-
-Returned in case the request failed to complete
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">InternalError</td>
+<td align="left">Returned in case the request failed to complete.</td>
 <td align="left">500 Internal Server Error</td>
 </tr>
 </table>
@@ -4862,101 +4794,133 @@ x-amz-request-charged
 
 ### Errors
 
-#### BadDigest
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+BadDigest
+
+</td>
+<td align="left">
 
 Returned if the Content-MD5 does not match the MD5 computed while uploading.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InvalidDigest
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidDigest
+
+</td>
+<td align="left">
 
 Returned in case header  `Content-MD5`  is not in a valid MD5 base64 format.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### ServiceUnavailable
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+ServiceUnavailable
+
+</td>
+<td align="left">
 
 Returned in case server is too crowded.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">503 Service Unavailable</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InvalidPart
+503 Service Unavailable
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidPart
+
+</td>
+<td align="left">
 
 ***Note:*** although under the S3 standard, InvalidPart is not an expected error for UploadPart operation, S4 applies several checks according to its own part restrictions:
 1. The uploaded part have inconsistent size with the rest of uploaded parts. For an N-parts upload, S4 requires parts in the range 1 to N-1 to have the same size, the part N can have a different size but must not be larger than previous parts. This error will cause the entire upload to be aborted.<br>**Note:** the S3 standard does not impose this requirement.
 1. The part is empty.<br>**Note:** the S3 standard does not impose this requirement.
 1. This part has already been uploaded. S4 does not allow re-uploading parts.<br>**Note:** the S3 standard does not impose this requirement.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
+<tr>
+<td align="left">
 
-#### EntityTooSmall
+EntityTooSmall
+
+</td>
+<td align="left">
 
 Returned in case the size of this (or any previously uploaded) part is smaller than 5MB, unless this is the last part, in which case, the smaller than 5MB size is allowed. Please note that:
 1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion. 
 1. This error will cause the entire upload to be aborted.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### NoSuchUpload
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchUpload
+
+</td>
+<td align="left">
 
 Returned if:
 - The requested upload ID does not exist or the object key does not belong to the upload with the given ID or
 - The upload has been aborted or completed
 
-<table>
-<tr>
-<th align="left">Status Code</th>
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
 </tr>
 <tr>
-<td align="left">404 Not Found</td>
-</tr>
-</table>
+<td align="left">
 
-#### InternalError
+InternalError
 
-Returned in case the request failed to complete, e.g. storage timeout, etc
+</td>
+<td align="left">
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+Returned in case the request failed to complete, e.g. storage timeout, etc.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
@@ -5250,46 +5214,34 @@ x-amz-request-charged
 
 ### Errors
 
-#### MalformedXML
-
-Returned in case the request body is not a valid xml message, or does not specify a valid ETag or PartNumber.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">MalformedXML</td>
+<td align="left">Returned in case the request body is not a valid xml message, or does not specify a valid ETag or PartNumber.</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
-
-#### InvalidRequest
-
-Returned in case the request body does not specify any valid part info.
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">InvalidRequest</td>
+<td align="left">Returned in case the request body does not specify any valid part info.</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
-
-#### InvalidPartOrder
-
-Returned if in the request body, the part list was not in ascending order. The part list must be ordered by part number.
-
-<table>
 <tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
+<td align="left">InvalidPartOrder</td>
+<td align="left">Returned if in the request body, the part list was not in ascending order. The part list must be ordered by part number.</td>
 <td align="left">400 Bad Request</td>
 </tr>
-</table>
+<tr>
+<td align="left">
 
-#### NoSuchUpload
+NoSuchUpload
+
+</td>
+<td align="left">
 
 Returned if one of the following conditions is true:
 - The requested upload ID does not exist or the object key does not belong to the upload with the given ID
@@ -5297,41 +5249,49 @@ Returned if one of the following conditions is true:
 - The upload has been completed. (It is a deviation from the S3 standard. S3 allows to complete a mulipart upload unlimited times as long as the part composition is unchanged.)
 - There is another completion request with the same upload Id running underway. (It is a deviation just like explained above)
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">404 Not Found</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InvalidPart
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidPart
+
+</td>
+<td align="left">
 
 Returned for one of the following reasons:  
 1. The part list in the completion request does not include all the uploaded parts.<br>**Note:** the S3 standard does not impose this requirement.
-2. One or more specified parts in the completion request haven't been uploaded.
-3. One or more specified parts in the completion request do not match ETag.
+1. One or more specified parts in the completion request haven't been uploaded.
+1. One or more specified parts in the completion request do not match ETag.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
 </tr>
 <tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+<td align="left">
 
-#### InternalError
+InternalError
 
-Returned in case the request failed to complete, e.g. failed to retrieve the uploaded object, etc
+</td>
+<td align="left">
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+Returned in case the request failed to complete, e.g. failed to retrieve the uploaded object, etc.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
@@ -5459,11 +5419,32 @@ x-amz-request-charged
 
 ### Errors
 
-#### NoSuchUpload
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchUpload
+
+</td>
+<td align="left">
 
 Returned for one of the following reasons:
 - The requested upload ID does not exist or the object key does not belong to the upload with the given ID
 - The upload has completed or has already been aborted (Note, the S3 standard always returns 204 in this case)
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+</table>
 
 # **2.2.3. Policies (on Buckets)**
 
@@ -5599,42 +5580,62 @@ x-amz-confirm-remove-self-bucket-access: `ConfirmRemoveSelfBucketAccess` _(optio
 
 ### Errors
 
-#### InvalidDigest
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidDigest
+
+</td>
+<td align="left">
 
 Returned in case header  `Content-MD5`  is missing.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### BadDigest
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+BadDigest
+
+</td>
+<td align="left">
 
 Returned in case  `Content-MD5`  header value does not match computed MD5.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InternalError
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
 
 Returned due to technical reasons.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
@@ -5734,29 +5735,45 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
 
 ### Errors
 
-#### NoSuchBucketPolicy
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchBucketPolicy
+
+</td>
+<td align="left">
 
 Returned in case  `<bucket_name>`  does not have an inline policy document.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">404 Not Found</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InvalidPolicyDocument
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidPolicyDocument
+
+</td>
+<td align="left">
 
 Mandatory JSON property is missing.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
 </tr>
 </table>
 
@@ -5856,29 +5873,45 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
 
 ### Errors
 
-#### NoSuchBucketPolicy
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchBucketPolicy
+
+</td>
+<td align="left">
 
 Returned in case  `<bucket_name>`  does not have an inline policy document.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">404 Not Found</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InternalError
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
 
 Returned due to technical reasons.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
 
@@ -5894,11 +5927,11 @@ Only version 4 is supported by S4. While the S3 standard supports both V1 and V4
 
 ### Specific Errors
 
-| Error Code (see: 1.3.1.1) | HTTP Status Code | Description
+| Error Code (see: [1.3.2](#132-common-errors)) | Description | HTTP Status Code
 | :--- | :--- | :---
-| - [AuthorizationQueryParametersError](#authorizationqueryparameterserror) | 400 Bad Request | 1) Unsupported signature algorithm<br>2) Invalid expiration (e.g. negative, non-integer, or exceed max limit (a default limit is 7 days))
-| - [AccessDenied](#accessdenied) | 403 Forbidden | The request has expired
-| - [SignatureDoesNotMatch](#signaturedoesnotmatch) | 403 Forbidden
+| - [AuthorizationQueryParametersError](#authorizationqueryparameterserror) | 1) Unsupported signature algorithm<br>2) Invalid expiration (e.g. negative, non-integer, or exceed max limit (a default limit is 7 days)) | 400 Bad Request
+| - [AccessDenied](#accessdenied) | The request has expired | 403 Forbidden
+| - [SignatureDoesNotMatch](#signaturedoesnotmatch) | | 403 Forbidden
 
 # **2.4. Presigned Post**
 
@@ -6553,33 +6586,16 @@ S4 provides the following managed policies:
 
 ### Errors
 
-#### InvalidArgument
-
-Returned in case of either the parameter PolicyArn missing from the request or if the ARN value is not valid or policy referenced by the given ARN is not found.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">InvalidArgument</td>
+<td align="left">Returned in case of either the parameter PolicyArn missing from the request or if the ARN value is not valid or policy referenced by the given ARN is not found.</td>
 <td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
-<td align="left">
-
-```xml
-<Error>
-  <Code>InvalidArgument</Code>
-  <Message>PolicyArn</Message>
-  <Resource>/</Resource>
-  <RequestId>0000000000000010</RequestId>
-</Error>
-```
-
-</td>
 </tr>
 </table>
 
@@ -6643,7 +6659,19 @@ Returned in case of either the parameter PolicyArn missing from the request or i
 
 ### Errors
 
-#### InvalidArgument
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
 
 Returned if:
 
@@ -6653,27 +6681,10 @@ Returned if:
 -   The parameter VersionId is missing
 -   The value of VersionId is not v1
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-</tr>
-<tr>
+</td>
 <td align="left">
 
-```xml
-<Error>
-  <Code>InvalidArgument</Code>
-  <Message>PolicyArn</Message>
-  <Resource>/</Resource>
-  <RequestId>0000000000000010</RequestId>
-</Error>
-```
+400 Bad Request
 
 </td>
 </tr>
@@ -6749,15 +6760,15 @@ Returned if:
 
 ### Errors
 
-#### InvalidArgument
-
-Returned in case Marker or MaxItems is specified but it is not integer or out of range.
-
 <table>
 <tr>
-<th align="left">Status Code</th>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">InvalidArgument</td>
+<td align="left">Returned in case Marker or MaxItems is specified but it is not integer or out of range.</td>
 <td align="left">400 Bad Request</td>
 </tr>
 </table>
@@ -6821,31 +6832,47 @@ Returned in case Marker or MaxItems is specified but it is not integer or out of
 
 ### Errors
 
-#### InvalidArgument
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
 
 (1) Returned in case \<UserName\>/\<GroupName\> does not exist in current account.
 
 (2) Returned in case Marker or MaxItems is specified but it is not integer or out of range.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### AccountProblem
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+AccountProblem
+
+</td>
+<td align="left">
 
 Returned due to technical reasons related to the  **internal representation**  of the account information.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">403 Forbidden</td>
+</td>
+<td align="left">
+
+403 Forbidden
+
+</td>
 </tr>
 </table>
 
@@ -6897,33 +6924,47 @@ Returned due to technical reasons related to the  **internal representation**  o
 
 ### Errors
 
-#### InvalidArgument
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left"
+
+InvalidArgument
+
+</td>
+<td align="left">
 
 Returned in case \<PolicyArn\> does not exist.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InternalError
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
 
 Returned due to technical reasons.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
-
-----------
 
 ## DetachUserPolicy \| DetachGroupPolicy
 
@@ -6973,28 +7014,44 @@ Returned due to technical reasons.
 
 ### Errors
 
-#### InvalidArgument
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
 
 Returned in case \<PolicyArn\> does not exist.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">400 Bad Request</td>
-</tr>
-</table>
+</td>
+<td align="left">
 
-#### InternalError
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
 
 Returned due to technical reasons.
 
-<table>
-<tr>
-<th align="left">Status Code</th>
-</tr>
-<tr>
-<td align="left">500 Internal Server Error</td>
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
 </tr>
 </table>
