@@ -28,18 +28,15 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Errors](#errors)
             -   [CreateBucket](#createbucket)
                 -   [Request](#request-1)
-                -   [Restrictions on Bucket Name](#restrictions-on-bucket-name)
                 -   [Success Response](#success-response-1)
                 -   [Errors](#errors-1)
                     -   [BucketAlreadyExists and S3 Discrepancies](#bucketalreadyexists-and-s3-discrepancies)
             -   [DeleteBucket](#deletebucket)
                 -   [Request](#request-2)
-                -   [Restrictions on Bucket Name](#restrictions-on-bucket-name-1)
                 -   [Success Response](#success-response-2)
                 -   [Errors](#errors-2)
             -   [HeadBucket](#headbucket)
                 -   [Request](#request-3)
-                -   [Restrictions on Bucket Name](#restrictions-on-bucket-name-2)
                 -   [Success Response](#success-response-3)
                 -   [Errors](#errors-3)
         -   [2.2.2. Objects](#222-objects)
@@ -55,15 +52,12 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-                -   [Restrictions on object key](#restrictions-on-object-key)
             -   [CopyObject](#copyobject)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-                -   [Restrictions on object key](#restrictions-on-object-key-1)
             -   [GetObject](#getobject)
                 -   [Request](#request-8)
-                -   [Restrictions on object key](#restrictions-on-object-key-2)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
             -   [HeadObject](#headobject)
@@ -78,7 +72,6 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-                -   [Restrictions on object key](#restrictions-on-object-key-3)
             -   [UploadPart](#uploadpart)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
@@ -339,9 +332,21 @@ The argument \<bucket_name\> is specified as part of the Host in the HTTP reques
 
 * Bucket names must not contain `/`
 
-If validation fails, an  **AccessDenied**  error is returned.
+* Bucket names must be between  `3`  (min) and  `63`  (max) characters long
 
-See additional restrictions imposed on bucket names by the CreateBucket and related services [here](#restrictions-on-bucket-name).
+* Bucket names can consist only of lowercase letters, numbers, dots  `.`, and hyphens  `-`
+
+* Bucket names must begin and end with a letter or number
+
+* Bucket names must not contain two adjacent periods
+
+* Bucket names must not be formatted as an IP address (for example,  `192.168.5.4`)
+
+* Bucket names must not start with the prefix `xn--`
+
+* Bucket names must not end with the suffix `-s3alias`
+
+If validation fails the above restrictions, an **AccessDenied** or **InvalidBucketName** error is returned (depending on the service being accessed).
 
 # **2.1.3. Object identification: key**
 
@@ -365,9 +370,13 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 * Object keys must not contain  `/./`  nor  `/../`
 
-If validation fails, an  **AccessDenied**  error is returned.
+* Object keys must be between  `1`  (min) and  `1024`  (max) characters long
 
-See additional restrictions imposed on object keys by the PutObject and related services [here](#restrictions-on-object-key).
+* Object keys must not contain non-printable ASCII characters (`128–255`  decimal characters)
+
+* Object keys must not contain  `\`,  `^`,  `{`,  `}`,  `%`, backtick,  `[`,  `]`,  `"`,  `<`,  `>`,  `~`,  `#`  nor  `|`
+
+If validation fails the above restrictions, an **AccessDenied** or **MethodNotAllowed** error is returned (depending on the service being accessed).
   
 # **2.1.5. Bucket and Object Ownership**
 
@@ -633,24 +642,6 @@ x-amz-object-ownership: `ObjectOwnership`
 </tr>
 </table>
 
-### Restrictions on Bucket Name
-
-In addition to the restrictions listed in the [bucket name validation](#212-bucket-name-validation) section, the CreateBucket service also imposes the following:
-
-- Bucket names must be between  `3`  (min) and  `63`  (max) characters long
-
-- Bucket names can consist only of lowercase letters, numbers, dots  `.`, and hyphens  `-`
-
-- Bucket names must begin and end with a letter or number
-
-- Bucket names must not contain two adjacent periods
-
-- Bucket names must not be formatted as an IP address (for example,  `192.168.5.4`)
-
-- Bucket names must not start with the prefix `xn--`
-
-- Bucket names must not end with the suffix `-s3alias`
-
 ### Success Response
 
 <table>
@@ -808,10 +799,6 @@ x-amz-expected-bucket-owner:  `BucketOwner`
 </tr>
 </table>
 
-### Restrictions on Bucket Name
-
-The same [requirements](#restrictions-on-bucket-name) for bucket names listed in the CreateBucket service section apply.
-
 ### Success Response
 
 <table>
@@ -851,7 +838,7 @@ InvalidBucketName
 </td>
 <td align="left">
 
-Returned in case `bucket_name` does not satisfy restrictions.
+Returned in case `<bucket_name>` does not satisfy restrictions.
 
 </td>
 <td align="left">
@@ -962,10 +949,6 @@ x-amz-expected-bucket-owner:  `BucketOwner`
 <td align="left"></td>
 </tr>
 </table>  
-
-### Restrictions on Bucket Name
-
-The same [requirements](#restrictions-on-bucket-name) for bucket names listed in the CreateBucket service section apply.
 
 ### Success Response
 
@@ -2184,14 +2167,6 @@ Returned in case the upload failed to complete
 </tr>
 </table>
 
-### Restrictions on object key
-
-In addition to the restrictions listed in the [object key validation](#214-object-key-validation) section, the PutObject service also imposes the following:
-
-- Object keys must be between  `1`  (min) and  `1024`  (max) characters long
-- Object keys must not contain non-printable ASCII characters (`128–255`  decimal characters)
-- Object keys must not contain  `\`,  `^`,  `{`,  `}`,  `%`, backtick,  `[`,  `]`,  `"`,  `<`,  `>`,  `~`,  `#`  nor  `|`
-
 ## CopyObject
 
 ### Request
@@ -2898,12 +2873,6 @@ x-amz-request-charged
 </tr>
 </table>
 
-### Restrictions on object key
-
-The same [requirements](#restrictions-on-object-key) for object keys listed in the PutObject service section apply.
-
-If validation fails, the  `AccessDenied` error is returned.
-
 ## GetObject
 
 ### Request
@@ -3160,12 +3129,6 @@ Range: Range
 <td align="left"></td>
 </tr>
 </table>
-
-### Restrictions on object key
-
-The same [requirements](#restrictions-on-object-key) for object keys listed in the PutObject service section apply.
-
-If validation fails, an  `AccessDenied` error is returned.
 
 ### Success Response
 
@@ -4410,12 +4373,6 @@ x-amz-checksum-algorithm
 <td align="left">500 Internal Server Error</td>
 </tr>
 </table>
-
-### Restrictions on object key
-
-The same [requirements](#restrictions-on-object-key) for object keys listed in the PutObject service section apply.
-
-If validation fails, an  `AccessDenied` error is returned.
 
 ## UploadPart
 
