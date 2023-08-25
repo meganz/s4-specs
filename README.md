@@ -2151,6 +2151,23 @@ Returned in case the new object name does not validate constraints (see below)
 <tr>
 <td align="left">
 
+InvalidRequest
+
+</td>
+<td align="left">
+
+The request contains payload and the object key ends with `'/'`. Object keys with trailing `'/'` are not allowed in S4.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 InternalError
 
 </td>
