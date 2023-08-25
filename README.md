@@ -2156,7 +2156,7 @@ InvalidRequest
 </td>
 <td align="left">
 
-The request contains payload and the object key ends with `'/'`. Object keys with trailing `'/'` are not allowed in S4.
+Key of an object containing payload is not allowed to end with `'/'` in S4.
 
 </td>
 <td align="left">
