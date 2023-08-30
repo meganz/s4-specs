@@ -297,7 +297,7 @@ Errors that may occur at any moment in any service.
 </tr>
 <tr>
 <td align="left">RequestTimeout</td>
-<td align="left">Either the client has been unresponsive for too long or the server experienced problems preventing it to serve the response on time.</td>
+<td align="left">The client has been unresponsive for too long.</td>
 <td align="left">400 Bad Request</td>
 </tr>
 </table>
