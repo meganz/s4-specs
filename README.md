@@ -5563,6 +5563,23 @@ x-amz-confirm-remove-self-bucket-access: `ConfirmRemoveSelfBucketAccess` _(optio
 <tr>
 <td align="left">
 
+MalformedPolicy
+
+</td>
+<td align="left">
+
+Returned in case the given policy contains invalid JSON or invalid principal.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 InvalidDigest
 
 </td>
@@ -5735,7 +5752,7 @@ Returned in case  `<bucket_name>`  does not have an inline policy document.
 <tr>
 <td align="left">
 
-InvalidPolicyDocument
+MalformedPolicy
 
 </td>
 <td align="left">
@@ -6567,9 +6584,19 @@ S4 provides the following managed policies:
 <th align="left">HTTP Status Code</th>
 </tr>
 <tr>
-<td align="left">InvalidArgument</td>
-<td align="left">Returned in case of either the parameter PolicyArn missing from the request or if the ARN value is not valid or policy referenced by the given ARN is not found.</td>
+<td align="left">ValidationError</td>
+<td align="left">Returned in case of either the parameter PolicyArn is missing from the request or its length is less than 20 or greater than 2048 characters.</td>
 <td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">InvalidInput</td>
+<td align="left">Returned in case the ARN value is not valid.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">NoSuchEntity</td>
+<td align="left">Returned in case the policy referenced by the given ARN is not found.</td>
+<td align="left">404 Not Found</td>
 </tr>
 </table>
 
@@ -6642,18 +6669,14 @@ S4 provides the following managed policies:
 <tr>
 <td align="left">
 
-InvalidArgument
+ValidationError
 
 </td>
 <td align="left">
 
-Returned if:
-
--   The parameter PolicyArn is missing OR
--   The ARN value is not valid OR
--   Policy referenced by the given ARN is not found
--   The parameter VersionId is missing
--   The value of VersionId is not v1
+Returned in case:
+1. The parameter PolicyArn is missing from the request or its length is less than 20 or greater than 2048 characters.
+1. The parameter VersionId is missing or does not match the following regex: `v[1-9][0-9]{0,9}(\\.[A-Za-z0-9-]{1,64})?`
 
 </td>
 <td align="left">
@@ -6661,6 +6684,16 @@ Returned if:
 400 Bad Request
 
 </td>
+</tr>
+<tr>
+<td align="left">InvalidInput</td>
+<td align="left">Returned in case the ARN value is not valid.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">NoSuchEntity</td>
+<td align="left">Returned if the policy version identified by the given ARN and versionId is not found.</td>
+<td align="left">404 Not Found</td>
 </tr>
 </table>
 
@@ -6741,9 +6774,28 @@ Returned if:
 <th align="left">HTTP Status Code</th>
 </tr>
 <tr>
-<td align="left">InvalidArgument</td>
-<td align="left">Returned in case Marker or MaxItems is specified but it is not integer or out of range.</td>
+<td align="left">MalformedInput</td>
+<td align="left">Returned in case Marker or MaxItems is specified but it is not an integer value or out of the integer value range.</td>
 <td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">
+
+ValidationError
+
+</td>
+<td align="left">
+
+Returned in case:
+1. Marker is specified but is less than zero or greater than the number of available managed policies.
+1. MaxItems is specified but it is less than 1 or greater than the max number for MaxItems specified in the configuration.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
 </tr>
 </table>
 
@@ -6813,16 +6865,38 @@ Returned if:
 <th align="left">HTTP Status Code</th>
 </tr>
 <tr>
+<td align="left">MalformedInput</td>
+<td align="left">Returned in case Marker or MaxItems is specified but it is not an integer value or out of the integer value range.</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
 <td align="left">
 
-InvalidArgument
+ValidationError
 
 </td>
 <td align="left">
 
-(1) Returned in case \<UserName\>/\<GroupName\> does not exist in current account.
+Returned in case:
+1. Marker is specified but is less than zero or greater than the number of available managed policies.
+1. MaxItems is specified but it is less than 1 or greater than the max number for MaxItems specified in the configuration.
 
-(2) Returned in case Marker or MaxItems is specified but it is not integer or out of range.
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchEntity
+
+</td>
+<td align="left">
+
+Returned if \<UserName\>/\<GroupName\> does not exist in the current account.
 
 </td>
 <td align="left">
