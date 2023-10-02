@@ -6585,7 +6585,7 @@ S4 provides the following managed policies:
 </tr>
 <tr>
 <td align="left">ValidationError</td>
-<td align="left">Returned in case of either the parameter PolicyArn is missing from the request or its length is less than 20 or greater than 2048 characters.</td>
+<td align="left">Returned in case of either the parameter PolicyArn missing from the request or its length being less than 20 or greater than 2048 characters.</td>
 <td align="left">400 Bad Request</td>
 </tr>
 <tr>
