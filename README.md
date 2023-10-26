@@ -152,6 +152,10 @@ Available S4 endpoints:
 | [ca-central-1.s4.mega.io](http://ca-central-1.s4.mega.io/) | Montreal |
 | [ca-west-1.s4.mega.io](http://ca-west-1.s4.mega.io/) | Vancouver |
 
+**Ensure to prefix the appropriate service code to the endpoint when constructing the API URL:**
+* For object storage/S3, use prefix `s3`. e.g.: `s3.eu-central-1.s4.mega.io`
+* For IAM, use prefix `iam`. e.g.: `iam.eu-central-1.s4.mega.io`
+
 Please note the endpoint [g.s4.mega.io](http://g.s4.mega.io/) is also available which currently points to `eu-central-1.s4.mega.io`.
 
 Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
