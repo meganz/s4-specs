@@ -376,9 +376,7 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 * Object keys must be between  `1`  (min) and  `1024`  (max) characters long
 
-* Object keys must not contain non-printable ASCII characters (`128–255`  decimal characters)
-
-* Object keys must not contain  `\`,  `^`,  `{`,  `}`,  `%`, backtick,  `[`,  `]`,  `"`,  `<`,  `>`,  `~`,  `#`  nor  `|`
+* Object keys may contain any UTF-8 characters
 
 If validation fails the above restrictions, an **AccessDenied** or **MethodNotAllowed** error is returned (depending on the service being accessed).
   
