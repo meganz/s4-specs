@@ -368,17 +368,20 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 # **2.1.4. Object Key Validation**
 
+* Object keys may contain any UTF-8 characters except the forbidden combinations mentioned below
+
 * Object key must not be  `..`
 
 * Object keys must not begin with  `../`  or end with  `/..`
 
 * Object keys must not contain  `/./`  nor  `/../`
 
+* Object keys must not contain consecutive forward slashes  `//`
+
 * Object keys must be between  `1`  (min) and  `1024`  (max) characters long
 
-* Object keys may contain any UTF-8 characters
 
-If validation fails the above restrictions, an **AccessDenied** or **MethodNotAllowed** error is returned (depending on the service being accessed).
+If validation fails the above restrictions, the **AccessDenied** or **MethodNotAllowed** error is returned (depending on the service being accessed).
   
 # **2.1.5. Bucket and Object Ownership**
 
