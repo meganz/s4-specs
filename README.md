@@ -149,6 +149,7 @@ Available S4 endpoints:
 | Endpoint | Location |
 | --- | --- |
 | [eu-central-1.s4.mega.io](http://eu-central-1.s4.mega.io/)  | Amsterdam |
+| [eu-central-2.s4.mega.io](http://eu-central-1.s4.mega.io/)  | Bettembourg |
 | [ca-central-1.s4.mega.io](http://ca-central-1.s4.mega.io/) | Montreal |
 | [ca-west-1.s4.mega.io](http://ca-west-1.s4.mega.io/) | Vancouver |
 
