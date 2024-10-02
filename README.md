@@ -459,7 +459,7 @@ S3 endpoint is s3._\<region\>_.s4.mega.io.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<ListAllMyBucketsResult>
+<ListAllMyBucketsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
   <Buckets>
     <Bucket>
       <CreationDate>2022-01-28T11:44:13Z</CreationDate>
@@ -1139,7 +1139,7 @@ Location: Location
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<ListBucketResult>
+<ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
    <IsTruncated>boolean</IsTruncated>
    <Marker>string</Marker>
    <NextMarker>string</NextMarker>
@@ -1343,7 +1343,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner`
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<ListBucketResult>
+<ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
    <IsTruncated>boolean</IsTruncated>
    <ContinuationToken>string</ContinuationToken>
    <NextContinuationToken>string</NextContinuationToken>
@@ -4360,7 +4360,7 @@ x-amz-checksum-algorithm
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<InitiateMultipartUploadResult>
+<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
     <Bucket>string</Bucket>
     <Key>string</Key>
     <UploadId>string</UploadId>
@@ -5179,7 +5179,7 @@ x-amz-request-charged
 <td align="left" colspan="2">
 
 ```xml
-<CompleteMultipartUploadResult>
+<CompleteMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
    <Location>string</Location>
    <Bucket>string</Bucket>
    <Key>string</Key>
