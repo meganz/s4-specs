@@ -39,64 +39,72 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-3)
                 -   [Success Response](#success-response-3)
                 -   [Errors](#errors-3)
-        -   [2.2.2. Objects](#222-objects)
-            -   [ListObjects](#listobjects)
+            -   [GetBucketLocation](#getbucketlocation)
                 -   [Request](#request-4)
                 -   [Success Response](#success-response-4)
                 -   [Errors](#errors-4)
-            -   [ListObjectsV2](#listobjectsv2)
+        -   [2.2.2. Objects](#222-objects)
+            -   [ListObjects](#listobjects)
                 -   [Request](#request-5)
                 -   [Success Response](#success-response-5)
                 -   [Errors](#errors-5)
-            -   [PutObject](#putobject)
+            -   [ListObjectsV2](#listobjectsv2)
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-            -   [CopyObject](#copyobject)
+            -   [PutObject](#putobject)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-            -   [GetObject](#getobject)
+            -   [CopyObject](#copyobject)
                 -   [Request](#request-8)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
-            -   [HeadObject](#headobject)
+            -   [GetObject](#getobject)
                 -   [Request](#request-9)
                 -   [Success Response](#success-response-9)
                 -   [Errors](#errors-9)
-            -   [DeleteObject](#deleteobject)
+            -   [HeadObject](#headobject)
                 -   [Request](#request-10)
                 -   [Success Response](#success-response-10)
                 -   [Errors](#errors-10)
-            -   [CreateMultipartUpload](#createmultipartupload)
+            -   [DeleteObject](#deleteobject)
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-            -   [UploadPart](#uploadpart)
+            -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [UploadPart](#uploadpart)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [GetBucketPolicy](#getbucketpolicy)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
+            -   [GetBucketPolicy](#getbucketpolicy)
+                -   [Request](#request-18)
+                -   [Success Response](#success-response-18)
+                -   [Errors](#errors-18)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-19)
+                -   [Success Response](#success-response-19)
+                -   [Errors](#errors-19)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -110,29 +118,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
-                -   [Request](#request-18)
-                -   [Success Response](#success-response-18)
-                -   [Errors](#errors-18)
-            -   [GetPolicyVersion](#getpolicyversion)
-                -   [Request](#request-19)
-                -   [Success Response](#success-response-19)
-                -   [Errors](#errors-19)
-            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies-listattachedgrouppolicies)
+            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-21)
                 -   [Success Response](#success-response-21)
                 -   [Errors](#errors-21)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy-attachgrouppolicy)
+            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-22)
                 -   [Success Response](#success-response-22)
                 -   [Errors](#errors-22)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy-detachgrouppolicy)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
                 -   [Request](#request-23)
                 -   [Success Response](#success-response-23)
                 -   [Errors](#errors-23)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+                -   [Request](#request-24)
+                -   [Success Response](#success-response-24)
+                -   [Errors](#errors-24)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+                -   [Request](#request-25)
+                -   [Success Response](#success-response-25)
+                -   [Errors](#errors-25)
 
 # **1. Common Details**
 
@@ -1005,6 +1013,85 @@ Returned in case `<bucket_name>` does not satisfy restrictions.
 </td>
 </tr>
 </table>
+
+## GetBucketLocation
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?location
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?location
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-expected-bucket-owner</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<th align="left" colspan=2>Body</th>
+</tr>
+<tr>
+<td align="left" colspan=2><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LocationConstraint xmlns="http://s3.amazonaws.com/doc/2006-03-01/">string</LocationConstraint>   🟠 – Always an empty string
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+None
 
 # **2.2.2. Objects**
 
@@ -5271,6 +5358,163 @@ Returned in case the request failed to complete, e.g. failed to retrieve the upl
 
 500 Internal Server Error
 
+</td>
+</tr>
+</table>
+
+## ListMultipartUploads
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?uploads
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?uploads
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;delimiter</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;encoding-type</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">&emsp;key-marker</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;max-uploads</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;prefix</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;upload-id-marker</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-request-payer</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-expected-bucket-owner</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<th align="left" colspan=2>Body</th>
+</tr>
+<tr>
+<td align="left" colspan=2><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-request-charged</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ListMultipartUploadsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <Bucket>string</Bucket>
+    <Upload>
+        <Key>string</Key>
+        <UploadId>string</UploadId>
+        <StorageClass>string</StorageClass>   🟠 – Always set to "STANDARD"
+        <Initiated>timestamp</Initiated>
+    </Upload>
+    ...
+    <MaxUploads>integer</MaxUploads>
+    <IsTruncated>boolean</IsTruncated>
+    <KeyMarker>string</KeyMarker>
+    <UploadIdMarker>string</UploadIdMarker>
+    <NextKeyMarker>string</NextKeyMarker>
+    <NextUploadIdMarker>string</NextUploadIdMarker>
+</ListMultipartUploadsResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
+
+Returned in case \<upload-id-marker\> in invalid.
+
+</td>
+<td align="left">
+
+400 Bad Request
 </td>
 </tr>
 </table>
