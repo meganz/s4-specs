@@ -5076,6 +5076,8 @@ x-amz-request-charged
 </tr>
 </table>
 
+### Errors
+
 <table>
 <tr>
 <th align="left">Error Code</th>
