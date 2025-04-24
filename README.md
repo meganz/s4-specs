@@ -319,14 +319,14 @@ Most of S3 services receive a  `<bucket_name>`  argument identifying the bucket 
 
 The argument \<bucket_name\> is specified as part of the URL in the HTTP request, e.g.:
 
-`GET /<bucket_name>/ HTTP/1.1.`  
+`GET /<bucket_name>/ HTTP/1.1.`
 `Host: s3.eu-central-1.s4.mega.io`
 
 ### Virtual-Hosted Style
 
 The argument \<bucket_name\> is specified as part of the Host in the HTTP request (i.e. as part of the sub-domain), e.g.:
 
-`GET / HTTP/1.1.`  
+`GET / HTTP/1.1.`
 `Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
 
 # **2.1.2. Bucket Name Validation**
@@ -359,12 +359,12 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 ### Path Style
 
-`GET /<bucket_name>/<key> HTTP/1.1.`  
+`GET /<bucket_name>/<key> HTTP/1.1.`
 `Host: s3.eu-central-1.s4.mega.io`
 
 ### Virtual-Hosted Style
 
-`GET /<key> HTTP/1.1.`  
+`GET /<key> HTTP/1.1.`
 `Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
 
 # **2.1.4. Object Key Validation**
@@ -383,7 +383,7 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 
 If validation fails the above restrictions, the **AccessDenied** or **MethodNotAllowed** error is returned (depending on the service being accessed).
-  
+
 # **2.1.5. Bucket and Object Ownership**
 
 Every bucket and every object, despite who created them, is owned by the canonical user (root account).
@@ -954,7 +954,7 @@ x-amz-expected-bucket-owner:  `BucketOwner`
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table>  
+</table>
 
 ### Success Response
 
@@ -1378,7 +1378,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner`
 
 </td>
 </tr>
-</table> 
+</table>
 
 ### Errors
 
@@ -1557,6 +1557,30 @@ Expires
 <td align="left">
 
 &#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -2107,7 +2131,7 @@ InvalidArgument
 </td>
 <td align="left">
 
-Returned in cases where there are invalid/missing arguments in the request. Particularly:  
+Returned in cases where there are invalid/missing arguments in the request. Particularly:
 1. If using chunked payload, and _`x-amz-decoded-content-length`_ is missing.
 1. If using chunked payload, and _`x-amz-decoded-content-length`_  is not valid.
 
@@ -2480,7 +2504,7 @@ x-amz-grant-write: `GrantWrite`
 <tr>
 <td align="left">
 
-x-amz-grant-write-acp: `GrantWriteACP` 
+x-amz-grant-write-acp: `GrantWriteACP`
 
 </td>
 <td align="left">
@@ -4218,7 +4242,7 @@ x-amz-checksum-algorithm
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table> 
+</table>
 
 ### Success Response
 
@@ -4617,7 +4641,7 @@ x-amz-expected-bucket-owner
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table>  
+</table>
 
 ### Success Response
 
@@ -4856,7 +4880,7 @@ EntityTooSmall
 <td align="left">
 
 Returned in case the size of this (or any previously uploaded) part is smaller than 5MB, unless this is the last part, in which case, the smaller than 5MB size is allowed. Please note that:
-1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion. 
+1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion.
 1. This error will cause the entire upload to be aborted.
 
 </td>
@@ -4958,6 +4982,30 @@ uploadId
 <tr>
 <th align="left">Specific Headers</th>
 <th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
 </tr>
 <tr>
 <td align="left">
@@ -5244,7 +5292,7 @@ InvalidPart
 </td>
 <td align="left">
 
-Returned for one of the following reasons:  
+Returned for one of the following reasons:
 1. The part list in the completion request does not include all the uploaded parts.<br>**Note:** the S3 standard does not impose this requirement.
 1. One or more specified parts in the completion request haven't been uploaded.
 1. One or more specified parts in the completion request do not match ETag.
@@ -5703,7 +5751,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table>   
+</table>
 
 ### Success Response
 
@@ -5866,7 +5914,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
 <tr>
 <td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
 </tr>
-</table> 
+</table>
 
 ### Errors
 
@@ -6712,9 +6760,9 @@ Returned in case:
 | Params | Supported
 | :--- | :---
 | Marker (optional) | &#128994; YES
-| MaxItems  _(optional)_ | &#128994; YES 
+| MaxItems  _(optional)_ | &#128994; YES
 | OnlyAttached  _(optional)_ | &#128308; NO
-| PathPrefix  _(optional)_ | &#128308; NO 
+| PathPrefix  _(optional)_ | &#128308; NO
 | PolicyUsageFilter  _(optional)_ | &#128308; NO
 | Scope  _(optional)_ | &#128308; NO
 
@@ -6813,11 +6861,11 @@ Returned in case:
 
 | Params | Supported
 | :--- | :---
-| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES
 | Marker _(optional)_ | &#128994; YES
 | MaxItems  _(optional)_ | &#128994; YES
 | PathPrefix  _(optional)_ | &#128308; NO
-  
+
 ### Success Response
 
 <table>
@@ -6938,7 +6986,7 @@ Returned due to technical reasons related to the  **internal representation**  o
 
 | Params | Supported
 | :--- | :---
-| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES
 | PolicyArn _(mandatory)_ | &#128994; YES
 
 ### Success Response
@@ -7028,7 +7076,7 @@ Returned due to technical reasons.
 
 | Params | Supported
 | :--- | :---
-| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES
 | PolicyArn _(mandatory)_ | &#128994; YES
 
 ### Success Response
