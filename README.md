@@ -5012,6 +5012,42 @@ x-amz-expected-bucket-owner
 </td>
 </tr>
 <tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
 <th align="left">Body</th>
 <th align="left">Supported</th>
 </tr>
@@ -5068,7 +5104,17 @@ x-amz-request-charged
       <Size>integer</Size>
    </Part>
    ...
-   <StorageClass>string</StorageClass>
+   <Initiator>
+      <ID>string</ID>
+      <DisplayName>string</DisplayName>
+   </Initiator>
+   <Owner>
+      <ID>string</ID>
+      <DisplayName>string</DisplayName>
+   </Owner>
+   <StorageClass>string</StorageClass>       🟠 – Always set to "STANDARD"
+   <ChecksumAlgorithm>string</ChecksumAlgorithm>     🔴 - NOT supported
+   <ChecksumType>string</ChecksumType>     🔴 - NOT supported
 </ListPartsResult>
 ```
 
