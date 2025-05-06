@@ -39,64 +39,76 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-3)
                 -   [Success Response](#success-response-3)
                 -   [Errors](#errors-3)
-        -   [2.2.2. Objects](#222-objects)
-            -   [ListObjects](#listobjects)
+            -   [GetBucketLocation](#getbucketlocation)
                 -   [Request](#request-4)
                 -   [Success Response](#success-response-4)
                 -   [Errors](#errors-4)
-            -   [ListObjectsV2](#listobjectsv2)
+        -   [2.2.2. Objects](#222-objects)
+            -   [ListObjects](#listobjects)
                 -   [Request](#request-5)
                 -   [Success Response](#success-response-5)
                 -   [Errors](#errors-5)
-            -   [PutObject](#putobject)
+            -   [ListObjectsV2](#listobjectsv2)
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-            -   [CopyObject](#copyobject)
+            -   [PutObject](#putobject)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-            -   [GetObject](#getobject)
+            -   [CopyObject](#copyobject)
                 -   [Request](#request-8)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
-            -   [HeadObject](#headobject)
+            -   [GetObject](#getobject)
                 -   [Request](#request-9)
                 -   [Success Response](#success-response-9)
                 -   [Errors](#errors-9)
-            -   [DeleteObject](#deleteobject)
+            -   [HeadObject](#headobject)
                 -   [Request](#request-10)
                 -   [Success Response](#success-response-10)
                 -   [Errors](#errors-10)
-            -   [CreateMultipartUpload](#createmultipartupload)
+            -   [DeleteObject](#deleteobject)
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-            -   [UploadPart](#uploadpart)
+            -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [UploadPart](#uploadpart)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [ListParts](#listparts)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [GetBucketPolicy](#getbucketpolicy)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
+                -   [Request](#request-18)
+                -   [Success Response](#success-response-18)
+                -   [Errors](#errors-18)
+            -   [GetBucketPolicy](#getbucketpolicy)
+                -   [Request](#request-19)
+                -   [Success Response](#success-response-19)
+                -   [Errors](#errors-19)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-20)
+                -   [Success Response](#success-response-20)
+                -   [Errors](#errors-20)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -110,29 +122,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
-                -   [Request](#request-18)
-                -   [Success Response](#success-response-18)
-                -   [Errors](#errors-18)
-            -   [GetPolicyVersion](#getpolicyversion)
-                -   [Request](#request-19)
-                -   [Success Response](#success-response-19)
-                -   [Errors](#errors-19)
-            -   [ListPolicies](#listpolicies)
-                -   [Request](#request-20)
-                -   [Success Response](#success-response-20)
-                -   [Errors](#errors-20)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies-listattachedgrouppolicies)
                 -   [Request](#request-21)
                 -   [Success Response](#success-response-21)
                 -   [Errors](#errors-21)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy-attachgrouppolicy)
+            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-22)
                 -   [Success Response](#success-response-22)
                 -   [Errors](#errors-22)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy-detachgrouppolicy)
+            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-23)
                 -   [Success Response](#success-response-23)
                 -   [Errors](#errors-23)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
+                -   [Request](#request-24)
+                -   [Success Response](#success-response-24)
+                -   [Errors](#errors-24)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+                -   [Request](#request-25)
+                -   [Success Response](#success-response-25)
+                -   [Errors](#errors-25)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+                -   [Request](#request-26)
+                -   [Success Response](#success-response-26)
+                -   [Errors](#errors-26)
 
 # **1. Common Details**
 
@@ -319,14 +331,14 @@ Most of S3 services receive a  `<bucket_name>`  argument identifying the bucket 
 
 The argument \<bucket_name\> is specified as part of the URL in the HTTP request, e.g.:
 
-`GET /<bucket_name>/ HTTP/1.1.`  
+`GET /<bucket_name>/ HTTP/1.1.`
 `Host: s3.eu-central-1.s4.mega.io`
 
 ### Virtual-Hosted Style
 
 The argument \<bucket_name\> is specified as part of the Host in the HTTP request (i.e. as part of the sub-domain), e.g.:
 
-`GET / HTTP/1.1.`  
+`GET / HTTP/1.1.`
 `Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
 
 # **2.1.2. Bucket Name Validation**
@@ -359,12 +371,12 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 ### Path Style
 
-`GET /<bucket_name>/<key> HTTP/1.1.`  
+`GET /<bucket_name>/<key> HTTP/1.1.`
 `Host: s3.eu-central-1.s4.mega.io`
 
 ### Virtual-Hosted Style
 
-`GET /<key> HTTP/1.1.`  
+`GET /<key> HTTP/1.1.`
 `Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
 
 # **2.1.4. Object Key Validation**
@@ -383,7 +395,7 @@ S3 services involving object manipulation or retrieval requires the object to be
 
 
 If validation fails the above restrictions, the **AccessDenied** or **MethodNotAllowed** error is returned (depending on the service being accessed).
-  
+
 # **2.1.5. Bucket and Object Ownership**
 
 Every bucket and every object, despite who created them, is owned by the canonical user (root account).
@@ -954,7 +966,7 @@ x-amz-expected-bucket-owner:  `BucketOwner`
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table>  
+</table>
 
 ### Success Response
 
@@ -1005,6 +1017,85 @@ Returned in case `<bucket_name>` does not satisfy restrictions.
 </td>
 </tr>
 </table>
+
+## GetBucketLocation
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?location
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?location
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-expected-bucket-owner</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<th align="left" colspan=2>Body</th>
+</tr>
+<tr>
+<td align="left" colspan=2><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LocationConstraint xmlns="http://s3.amazonaws.com/doc/2006-03-01/">string</LocationConstraint>   🟠 – Always an empty string
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+None
 
 # **2.2.2. Objects**
 
@@ -1378,7 +1469,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner`
 
 </td>
 </tr>
-</table> 
+</table>
 
 ### Errors
 
@@ -2107,7 +2198,7 @@ InvalidArgument
 </td>
 <td align="left">
 
-Returned in cases where there are invalid/missing arguments in the request. Particularly:  
+Returned in cases where there are invalid/missing arguments in the request. Particularly:
 1. If using chunked payload, and _`x-amz-decoded-content-length`_ is missing.
 1. If using chunked payload, and _`x-amz-decoded-content-length`_  is not valid.
 
@@ -2480,7 +2571,7 @@ x-amz-grant-write: `GrantWrite`
 <tr>
 <td align="left">
 
-x-amz-grant-write-acp: `GrantWriteACP` 
+x-amz-grant-write-acp: `GrantWriteACP`
 
 </td>
 <td align="left">
@@ -4218,7 +4309,7 @@ x-amz-checksum-algorithm
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table> 
+</table>
 
 ### Success Response
 
@@ -4617,7 +4708,7 @@ x-amz-expected-bucket-owner
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table>  
+</table>
 
 ### Success Response
 
@@ -4856,7 +4947,7 @@ EntityTooSmall
 <td align="left">
 
 Returned in case the size of this (or any previously uploaded) part is smaller than 5MB, unless this is the last part, in which case, the smaller than 5MB size is allowed. Please note that:
-1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion. 
+1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion.
 1. This error will cause the entire upload to be aborted.
 
 </td>
@@ -4894,6 +4985,288 @@ InternalError
 <td align="left">
 
 Returned in case the request failed to complete, e.g. storage timeout, etc.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
+</tr>
+</table>
+
+## ListParts
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploadId
+
+</td>
+<td align="left">
+
+&#128994; YES (Required)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+max-parts
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+part-number-marker
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<ListPartsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <Bucket>string</Bucket>
+   <Key>string</Key>
+   <UploadId>string</UploadId>
+   <PartNumberMarker>integer</PartNumberMarker>
+   <NextPartNumberMarker>integer</NextPartNumberMarker>
+   <MaxParts>integer</MaxParts>
+   <IsTruncated>boolean</IsTruncated>
+   <Part>
+      <PartNumber>integer</PartNumber>
+      <LastModified>timestamp</LastModified>
+      <ETag>string</ETag>
+      <Size>integer</Size>
+   </Part>
+   ...
+   <Initiator>
+      <ID>string</ID>
+      <DisplayName>string</DisplayName>
+   </Initiator>
+   <Owner>
+      <ID>string</ID>
+      <DisplayName>string</DisplayName>
+   </Owner>
+   <StorageClass>string</StorageClass>       🟠 – Always set to "STANDARD"
+   <ChecksumAlgorithm>string</ChecksumAlgorithm>     🔴 - NOT supported
+   <ChecksumType>string</ChecksumType>     🔴 - NOT supported
+</ListPartsResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
+
+Returned if one of the following conditions is true:
+- Required parameter `uploadId` is missing or empty
+- Parameter `part-number-marker` is not a non-negative integer
+- Parameter `max-parts` is not a non-negative integer
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchUpload
+
+</td>
+<td align="left">
+
+Returned if one of the following conditions is true:
+- The requested upload ID does not exist or is invalid
+- The object key specified does not match the key associated with the upload ID
+- The upload has been previously aborted
+- The upload has been completed and is no longer available for listing
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned due to technical reasons.
 
 </td>
 <td align="left">
@@ -5244,7 +5617,7 @@ InvalidPart
 </td>
 <td align="left">
 
-Returned for one of the following reasons:  
+Returned for one of the following reasons:
 1. The part list in the completion request does not include all the uploaded parts.<br>**Note:** the S3 standard does not impose this requirement.
 1. One or more specified parts in the completion request haven't been uploaded.
 1. One or more specified parts in the completion request do not match ETag.
@@ -5271,6 +5644,163 @@ Returned in case the request failed to complete, e.g. failed to retrieve the upl
 
 500 Internal Server Error
 
+</td>
+</tr>
+</table>
+
+## ListMultipartUploads
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?uploads
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?uploads
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;delimiter</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;encoding-type</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">&emsp;key-marker</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;max-uploads</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;prefix</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<td align="left">&emsp;upload-id-marker</td>
+<td align="left">&emsp;&#128994; YES</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-request-payer</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-expected-bucket-owner</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<th align="left" colspan=2>Body</th>
+</tr>
+<tr>
+<td align="left" colspan=2><i>&lt;empty&gt;</i></td>
+</tr>
+</table>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">&emsp;x-amz-request-charged</td>
+<td align="left">&emsp;&#128308; NO</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ListMultipartUploadsResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <Bucket>string</Bucket>
+    <Upload>
+        <Key>string</Key>
+        <UploadId>string</UploadId>
+        <StorageClass>string</StorageClass>   🟠 – Always set to "STANDARD"
+        <Initiated>timestamp</Initiated>
+    </Upload>
+    ...
+    <MaxUploads>integer</MaxUploads>
+    <IsTruncated>boolean</IsTruncated>
+    <KeyMarker>string</KeyMarker>
+    <UploadIdMarker>string</UploadIdMarker>
+    <NextKeyMarker>string</NextKeyMarker>
+    <NextUploadIdMarker>string</NextUploadIdMarker>
+</ListMultipartUploadsResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
+
+Returned in case \<upload-id-marker\> in invalid.
+
+</td>
+<td align="left">
+
+400 Bad Request
 </td>
 </tr>
 </table>
@@ -5703,7 +6233,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
 <td align="left"><i>&lt;empty&gt;</i></td>
 <td align="left"></td>
 </tr>
-</table>   
+</table>
 
 ### Success Response
 
@@ -5866,7 +6396,7 @@ x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
 <tr>
 <td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
 </tr>
-</table> 
+</table>
 
 ### Errors
 
@@ -6712,9 +7242,9 @@ Returned in case:
 | Params | Supported
 | :--- | :---
 | Marker (optional) | &#128994; YES
-| MaxItems  _(optional)_ | &#128994; YES 
+| MaxItems  _(optional)_ | &#128994; YES
 | OnlyAttached  _(optional)_ | &#128308; NO
-| PathPrefix  _(optional)_ | &#128308; NO 
+| PathPrefix  _(optional)_ | &#128308; NO
 | PolicyUsageFilter  _(optional)_ | &#128308; NO
 | Scope  _(optional)_ | &#128308; NO
 
@@ -6813,11 +7343,11 @@ Returned in case:
 
 | Params | Supported
 | :--- | :---
-| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES
 | Marker _(optional)_ | &#128994; YES
 | MaxItems  _(optional)_ | &#128994; YES
 | PathPrefix  _(optional)_ | &#128308; NO
-  
+
 ### Success Response
 
 <table>
@@ -6938,7 +7468,7 @@ Returned due to technical reasons related to the  **internal representation**  o
 
 | Params | Supported
 | :--- | :---
-| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES
 | PolicyArn _(mandatory)_ | &#128994; YES
 
 ### Success Response
@@ -7028,7 +7558,7 @@ Returned due to technical reasons.
 
 | Params | Supported
 | :--- | :---
-| UserName \| GroupName  _(mandatory)_ | &#128994; YES 
+| UserName \| GroupName  _(mandatory)_ | &#128994; YES
 | PolicyArn _(mandatory)_ | &#128994; YES
 
 ### Success Response
