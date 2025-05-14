@@ -2427,24 +2427,12 @@ x-amz-copy-source
 <tr>
 <td align="left">
 
-x-amz-copy-source
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
 x-amz-copy-source-if-match
 
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2456,7 +2444,7 @@ x-amz-copy-source-if-modified-since
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2468,7 +2456,7 @@ x-amz-copy-source-if-none-match
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2480,7 +2468,7 @@ x-amz-copy-source-if-unmodified-since
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
