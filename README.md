@@ -1146,7 +1146,7 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 </tr>
 <tr>
 <td align="left">encoding-type</td>
-<td align="left">&#128308; NO</td>
+<td align="left">&#128994; YES</td>
 </tr>
 <tr>
 <td align="left">marker</td>
@@ -1356,7 +1356,7 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 </tr>
 <tr>
 <td align="left">encoding-type</td>
-<td align="left">&#128308; NO</td>
+<td align="left">&#128994; YES</td>
 </tr>
 <tr>
 <td align="left">fetch-owner</td>
@@ -5693,7 +5693,7 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 </tr>
 <tr>
 <td align="left">&emsp;encoding-type</td>
-<td align="left">&emsp;&#128308; NO</td>
+<td align="left">&emsp;&#128994; YES</td>
 </tr>
 <tr>
 <td align="left">&emsp;key-marker</td>
