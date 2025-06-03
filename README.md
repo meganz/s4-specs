@@ -1575,7 +1575,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1587,7 +1587,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1599,7 +1599,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1611,7 +1611,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1635,7 +1635,7 @@ Content-Type
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1647,7 +1647,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1780,6 +1780,18 @@ x-amz-grant-write-acp: `GrantWriteACP`
 <td align="left">
 
 &#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -2336,7 +2348,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2348,7 +2360,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2360,7 +2372,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2372,7 +2384,19 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Type
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -2384,7 +2408,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2421,18 +2445,6 @@ x-amz-copy-source
 <td align="left">
 
 &#128994; YES
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-copy-source
-
-</td>
-<td align="left">
-
-&#128308; NO
 
 </td>
 </tr>
@@ -2583,12 +2595,24 @@ x-amz-grant-write-acp: `GrantWriteACP`
 <tr>
 <td align="left">
 
+x-amz-meta-*
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 x-amz-metadata-directive
 
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3265,7 +3289,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3277,7 +3301,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3289,7 +3313,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3301,7 +3325,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3325,7 +3349,7 @@ Content-Type
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3349,7 +3373,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3357,6 +3381,18 @@ Expires
 <td align="left">
 
 Last-Modified
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
 
 </td>
 <td align="left">
@@ -3590,12 +3626,12 @@ Range: Range
 <tr>
 <td align="left">
 
-_Cache-Control_
+Cache-Control
 
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3607,7 +3643,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3619,7 +3655,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3631,7 +3667,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3679,7 +3715,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3687,6 +3723,18 @@ Expires
 <td align="left">
 
 Last-Modified
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
 
 </td>
 <td align="left">
@@ -3997,7 +4045,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4009,7 +4057,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4021,7 +4069,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4033,7 +4081,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4045,7 +4093,7 @@ Content-Type
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4057,7 +4105,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4106,6 +4154,18 @@ x-amz-grant-write-acp
 <td align="left">
 
 &#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
