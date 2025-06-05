@@ -44,87 +44,81 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Success Response](#success-response-4)
                 -   [Errors](#errors-4)
             -   [PutBucketAcl](#putbucketacl)
+            -   [GetBucketAcl](#getbucketacl)
                 -   [Request](#request-5)
                 -   [Success Response](#success-response-5)
                 -   [Errors](#errors-5)
-            -   [GetBucketAcl](#getbucketacl)
+        -   [2.2.2. Objects](#222-objects)
+            -   [ListObjects](#listobjects)
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-        -   [2.2.2. Objects](#222-objects)
-            -   [ListObjects](#listobjects)
+            -   [ListObjectsV2](#listobjectsv2)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-            -   [ListObjectsV2](#listobjectsv2)
+            -   [PutObject](#putobject)
                 -   [Request](#request-8)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
-            -   [PutObject](#putobject)
+            -   [CopyObject](#copyobject)
                 -   [Request](#request-9)
                 -   [Success Response](#success-response-9)
                 -   [Errors](#errors-9)
-            -   [CopyObject](#copyobject)
+            -   [GetObject](#getobject)
                 -   [Request](#request-10)
                 -   [Success Response](#success-response-10)
                 -   [Errors](#errors-10)
-            -   [GetObject](#getobject)
+            -   [HeadObject](#headobject)
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-            -   [HeadObject](#headobject)
+            -   [DeleteObject](#deleteobject)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-            -   [DeleteObject](#deleteobject)
+            -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [CreateMultipartUpload](#createmultipartupload)
+            -   [UploadPart](#uploadpart)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-            -   [UploadPart](#uploadpart)
+            -   [ListParts](#listparts)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [ListParts](#listparts)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
-            -   [ListMultipartUploads](#listmultipartuploads)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-18)
                 -   [Success Response](#success-response-18)
                 -   [Errors](#errors-18)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [PutObjectAcl](#putobjectacl)
+            -   [GetObjectAcl](#getobjectacl)
                 -   [Request](#request-19)
                 -   [Success Response](#success-response-19)
                 -   [Errors](#errors-19)
-            -   [PutObjectAcl](#putobjectacl)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
-            -   [GetObjectAcl](#getobjectacl)
+            -   [GetBucketPolicy](#getbucketpolicy)
                 -   [Request](#request-21)
                 -   [Success Response](#success-response-21)
                 -   [Errors](#errors-21)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
                 -   [Request](#request-22)
                 -   [Success Response](#success-response-22)
                 -   [Errors](#errors-22)
-            -   [GetBucketPolicy](#getbucketpolicy)
-                -   [Request](#request-23)
-                -   [Success Response](#success-response-23)
-                -   [Errors](#errors-23)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
-                -   [Request](#request-24)
-                -   [Success Response](#success-response-24)
-                -   [Errors](#errors-24)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -138,29 +132,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
+                -   [Request](#request-23)
+                -   [Success Response](#success-response-23)
+                -   [Errors](#errors-23)
+            -   [GetPolicyVersion](#getpolicyversion)
+                -   [Request](#request-24)
+                -   [Success Response](#success-response-24)
+                -   [Errors](#errors-24)
+            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-25)
                 -   [Success Response](#success-response-25)
                 -   [Errors](#errors-25)
-            -   [GetPolicyVersion](#getpolicyversion)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
                 -   [Request](#request-26)
                 -   [Success Response](#success-response-26)
                 -   [Errors](#errors-26)
-            -   [ListPolicies](#listpolicies)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
                 -   [Request](#request-27)
                 -   [Success Response](#success-response-27)
                 -   [Errors](#errors-27)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
                 -   [Request](#request-28)
                 -   [Success Response](#success-response-28)
                 -   [Errors](#errors-28)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
-                -   [Request](#request-29)
-                -   [Success Response](#success-response-29)
-                -   [Errors](#errors-29)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
-                -   [Request](#request-30)
-                -   [Success Response](#success-response-30)
-                -   [Errors](#errors-30)
 
 # **1. Common Details**
 
@@ -1115,208 +1109,7 @@ None
 
 ## PutBucketAcl
 
-### Request
-
-<table>
-<tr>
-<th align="left" colspan="2">Method</th>
-</tr>
-<tr>
-<td align="left" colspan="2">PUT</td>
-</tr>
-<tr>
-<th align="left">URL (alternatives)</th>
-<th align="left">Note</th>
-</tr>
-<tr>
-<td align="left">
-
-/?acl
-
-</td>
-<td align="left">
-
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-/`<bucket_name>`/?acl
-
-</td>
-<td align="left"></td>
-</tr>
-<tr>
-<th align="left">URL Params</th>
-<th align="left">Supported</th>
-</tr>
-<tr>
-<td align="left"><i>&lt;none&gt;</i></td>
-<td align="left"></td>
-</tr>
-<tr>
-<th align="left">Specific Headers</th>
-<th align="left">Supported</th>
-</tr>
-<tr>
-<td align="left">
-
-Content-MD5: `ContentMD5` _(mandatory)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-full-control _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-read _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-read-acp _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-write _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-write-acp _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm` _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-<th align="left">Supported</th>
-</tr>
-<tr>
-<td align="left">{ ACL in JSON format }</td>
-<td align="left">&#128308; NO</td>
-</tr>
-</table>
-
-### Success Response
-
-<table>
-<tr>
-<td align="left">&lt;none&gt;</td>
-</tr>
-</table>
-
-### Errors
-
-<table>
-<tr>
-<th align="left">Error Code</th>
-<th align="left">Description</th>
-<th align="left">HTTP Status Code</th>
-</tr>
-<tr>
-<td align="left">
-
-AccessControlListNotSupported
-
-</td>
-<td align="left">
-
-This service will always return AccessControlListNotSupported error.
-
-</td>
-<td align="left">
-
-400 Bad Request
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-InternalError
-
-</td>
-<td align="left">
-
-Returned due to technical reasons.
-
-</td>
-<td align="left">
-
-500 Internal Server Error
-
-</td>
-</tr>
-</table>
+This service is currently not supported and will always return `AccessControlListNotSupported` error (400 Bad Request).
 
 ## GetBucketAcl
 
@@ -1366,6 +1159,18 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 <th align="left">Supported</th>
 </tr>
 <tr>
+<td align="left">
+
+x-amz-expected-bucket-owner _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
 <th align="left">Body</th>
 <th align="left">Supported</th>
 </tr>
@@ -1393,10 +1198,10 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 <td align="left"></td>
 </tr>
 <tr>
-<th align="left">Body</th>
+<th align="left" colspan="2">Body</th>
 </tr>
 <tr>
-<td align="left">
+<td align="left" colspan="2">
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -6326,220 +6131,7 @@ Returned for one of the following reasons:
 
 ## PutObjectAcl
 
-### Request
-
-<table>
-<tr>
-<th align="left" colspan="2">Method</th>
-</tr>
-<tr>
-<td align="left" colspan="2">PUT</td>
-</tr>
-<tr>
-<th align="left">URL (alternatives)</th>
-<th align="left">Note</th>
-</tr>
-<tr>
-<td align="left">
-
-/&lt;Key&gt;?acl
-
-</td>
-<td align="left">
-
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-/`<bucket_name>`/&lt;Key&gt;?acl
-
-</td>
-<td align="left"></td>
-</tr>
-<tr>
-<th align="left">URL Params</th>
-<th align="left">Supported</th>
-</tr>
-<tr>
-<td align="left"><i>&lt;none&gt;</i></td>
-<td align="left"></td>
-</tr>
-<tr>
-<th align="left">Specific Headers</th>
-<th align="left">Supported</th>
-</tr>
-<tr>
-<td align="left">
-
-Content-MD5: `ContentMD5` _(mandatory)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-expected-bucket-owner: `ExpectedBucketOwner` _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-full-control _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-read _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-read-acp _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-write _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-grant-write-acp _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-request-payer _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm` _(optional)_
-
-</td>
-<td align="left">
-
-&#128308; NO
-
-</td>
-</tr>
-<tr>
-<th align="left">Body</th>
-<th align="left">Supported</th>
-</tr>
-<tr>
-<td align="left">{ ACL in JSON format }</td>
-<td align="left">&#128308; NO</td>
-</tr>
-</table>
-
-### Success Response
-
-<table>
-<tr>
-<td align="left">&lt;none&gt;</td>
-</tr>
-</table>
-
-### Errors
-
-<table>
-<tr>
-<th align="left">Error Code</th>
-<th align="left">Description</th>
-<th align="left">HTTP Status Code</th>
-</tr>
-<tr>
-<td align="left">
-
-AccessControlListNotSupported
-
-</td>
-<td align="left">
-
-This service will always return AccessControlListNotSupported error.
-
-</td>
-<td align="left">
-
-400 Bad Request
-
-</td>
-</tr>
-<tr>
-<td align="left">
-
-InternalError
-
-</td>
-<td align="left">
-
-Returned due to technical reasons.
-
-</td>
-<td align="left">
-
-500 Internal Server Error
-
-</td>
-</tr>
-</table>
+This service is currently not supported and will always return `AccessControlListNotSupported` error (400 Bad Request).
 
 ## GetObjectAcl
 
@@ -6640,10 +6232,10 @@ x-amz-request-payer _(optional)_
 <td align="left"></td>
 </tr>
 <tr>
-<th align="left">Body</th>
+<th align="left" colspan="2">Body</th>
 </tr>
 <tr>
-<td align="left">
+<td align="left" colspan="2">
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
