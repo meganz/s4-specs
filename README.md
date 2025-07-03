@@ -80,35 +80,39 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [ListParts](#listparts)
+            -   [UploadPartCopy](#uploadpartcopy)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [ListParts](#listparts)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [ListMultipartUploads](#listmultipartuploads)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-18)
                 -   [Success Response](#success-response-18)
                 -   [Errors](#errors-18)
-            -   [GetBucketPolicy](#getbucketpolicy)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
                 -   [Request](#request-19)
                 -   [Success Response](#success-response-19)
                 -   [Errors](#errors-19)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
+            -   [GetBucketPolicy](#getbucketpolicy)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-21)
+                -   [Success Response](#success-response-21)
+                -   [Errors](#errors-21)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -122,29 +126,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
-                -   [Request](#request-21)
-                -   [Success Response](#success-response-21)
-                -   [Errors](#errors-21)
-            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-22)
                 -   [Success Response](#success-response-22)
                 -   [Errors](#errors-22)
-            -   [ListPolicies](#listpolicies)
+            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-23)
                 -   [Success Response](#success-response-23)
                 -   [Errors](#errors-23)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
+            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-24)
                 -   [Success Response](#success-response-24)
                 -   [Errors](#errors-24)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
                 -   [Request](#request-25)
                 -   [Success Response](#success-response-25)
                 -   [Errors](#errors-25)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
                 -   [Request](#request-26)
                 -   [Success Response](#success-response-26)
                 -   [Errors](#errors-26)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+                -   [Request](#request-27)
+                -   [Success Response](#success-response-27)
+                -   [Errors](#errors-27)
 
 # **1. Common Details**
 
@@ -4957,6 +4961,529 @@ InvalidDigest
 <td align="left">
 
 Returned in case header  `Content-MD5`  is not in a valid MD5 base64 format.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+ServiceUnavailable
+
+</td>
+<td align="left">
+
+Returned in case server is too crowded.
+
+</td>
+<td align="left">
+
+503 Service Unavailable
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidPart
+
+</td>
+<td align="left">
+
+***Note:*** although under the S3 standard, InvalidPart is not an expected error for UploadPart operation, S4 applies several checks according to its own part restrictions:
+1. The uploaded part have inconsistent size with the rest of uploaded parts. For an N-parts upload, S4 requires parts in the range 1 to N-1 to have the same size, the part N can have a different size but must not be larger than previous parts. This error will cause the entire upload to be aborted.<br>**Note:** the S3 standard does not impose this requirement.
+1. The part is empty.<br>**Note:** the S3 standard does not impose this requirement.
+1. This part has already been uploaded. S4 does not allow re-uploading parts.<br>**Note:** the S3 standard does not impose this requirement.
+
+</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">
+
+EntityTooSmall
+
+</td>
+<td align="left">
+
+Returned in case the size of this (or any previously uploaded) part is smaller than 5MB, unless this is the last part, in which case, the smaller than 5MB size is allowed. Please note that:
+1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion.
+1. This error will cause the entire upload to be aborted.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchUpload
+
+</td>
+<td align="left">
+
+Returned if:
+- The requested upload ID does not exist or the object key does not belong to the upload with the given ID or
+- The upload has been aborted or completed
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned in case the request failed to complete, e.g. storage timeout, etc.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
+</tr>
+</table>
+
+## UploadPartCopy
+
+UploadPartCopy is supported for full object copies only.
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploadId
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+</tr>
+<tr>
+<td align="left">
+
+partNumber
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source
+
+</td>
+<td align="left">
+
+&#128994; YES (non-access-point format only i.e. bucket/object/key)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-match
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-modified-since
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-none-match
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-unmodified-since
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-range
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-source-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<CopyPartResult>
+   <ETag>string</ETag>
+   <LastModified>timestamp</LastModified>
+</CopyPartResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
+
+Returned in case of invalid x-amz-copy-source-range.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidRequest
+
+</td>
+<td align="left">
+
+Returned in case of invalid x-amz-copy-source-range (the lower range bound is greater than the source file size).
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchKey
+
+</td>
+<td align="left">
+
+Returned if the copy source specified by x-amz-copy-source does not exist.
 
 </td>
 <td align="left">
