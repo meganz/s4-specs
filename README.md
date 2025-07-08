@@ -43,72 +43,82 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-4)
                 -   [Success Response](#success-response-4)
                 -   [Errors](#errors-4)
-        -   [2.2.2. Objects](#222-objects)
-            -   [ListObjects](#listobjects)
+            -   [PutBucketAcl](#putbucketacl)
+            -   [GetBucketAcl](#getbucketacl)
                 -   [Request](#request-5)
                 -   [Success Response](#success-response-5)
                 -   [Errors](#errors-5)
-            -   [ListObjectsV2](#listobjectsv2)
+        -   [2.2.2. Objects](#222-objects)
+            -   [ListObjects](#listobjects)
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-            -   [PutObject](#putobject)
+            -   [ListObjectsV2](#listobjectsv2)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-            -   [CopyObject](#copyobject)
+            -   [PutObject](#putobject)
                 -   [Request](#request-8)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
-            -   [GetObject](#getobject)
+            -   [CopyObject](#copyobject)
                 -   [Request](#request-9)
                 -   [Success Response](#success-response-9)
                 -   [Errors](#errors-9)
-            -   [HeadObject](#headobject)
+            -   [GetObject](#getobject)
                 -   [Request](#request-10)
                 -   [Success Response](#success-response-10)
                 -   [Errors](#errors-10)
-            -   [DeleteObject](#deleteobject)
+            -   [HeadObject](#headobject)
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-            -   [CreateMultipartUpload](#createmultipartupload)
+            -   [DeleteObject](#deleteobject)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-            -   [UploadPart](#uploadpart)
+            -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [ListParts](#listparts)
+            -   [UploadPart](#uploadpart)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [ListParts](#listparts)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [ListMultipartUploads](#listmultipartuploads)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-18)
                 -   [Success Response](#success-response-18)
                 -   [Errors](#errors-18)
-            -   [GetBucketPolicy](#getbucketpolicy)
+            -   [PutObjectAcl](#putobjectacl)
+            -   [GetObjectAcl](#getobjectacl)
                 -   [Request](#request-19)
                 -   [Success Response](#success-response-19)
                 -   [Errors](#errors-19)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
+            -   [GetBucketPolicy](#getbucketpolicy)
+                -   [Request](#request-21)
+                -   [Success Response](#success-response-21)
+                -   [Errors](#errors-21)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-22)
+                -   [Success Response](#success-response-22)
+                -   [Errors](#errors-22)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -122,29 +132,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
-                -   [Request](#request-21)
-                -   [Success Response](#success-response-21)
-                -   [Errors](#errors-21)
-            -   [GetPolicyVersion](#getpolicyversion)
-                -   [Request](#request-22)
-                -   [Success Response](#success-response-22)
-                -   [Errors](#errors-22)
-            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-23)
                 -   [Success Response](#success-response-23)
                 -   [Errors](#errors-23)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
+            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-24)
                 -   [Success Response](#success-response-24)
                 -   [Errors](#errors-24)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-25)
                 -   [Success Response](#success-response-25)
                 -   [Errors](#errors-25)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
                 -   [Request](#request-26)
                 -   [Success Response](#success-response-26)
                 -   [Errors](#errors-26)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+                -   [Request](#request-27)
+                -   [Success Response](#success-response-27)
+                -   [Errors](#errors-27)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+                -   [Request](#request-28)
+                -   [Success Response](#success-response-28)
+                -   [Errors](#errors-28)
 
 # **1. Common Details**
 
@@ -1096,6 +1106,169 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 
 ### Errors
 None
+
+## PutBucketAcl
+
+This service is currently not supported and will always return `AccessControlListNotSupported` error (400 Bad Request).
+
+## GetBucketAcl
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?acl
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?acl
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/"> 🟠 – Always returns canned response
+  <Owner>
+    <ID>string</ID>
+    <DisplayName>string</DisplayName>
+  </Owner>
+  <AccessControlList>
+    <Grant>
+      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
+        <ID>string</ID>
+        <DisplayName>string</DisplayName>
+      </Grantee>
+      <Permission>FULL_CONTROL</Permission>   🟠 – Always returns FULL_CONTROL
+    </Grant>
+  </AccessControlList>
+</AccessControlPolicy>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchBucket
+
+</td>
+<td align="left">
+
+Returned in case  `<bucket_name>`  does not exist.
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned due to technical reasons.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
+</tr>
+</table>
 
 # **2.2.2. Objects**
 
@@ -6011,6 +6184,181 @@ Returned for one of the following reasons:
 <td align="left">
 
 404 Not Found
+
+</td>
+</tr>
+</table>
+
+## PutObjectAcl
+
+This service is currently not supported and will always return `AccessControlListNotSupported` error (400 Bad Request).
+
+## GetObjectAcl
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;?acl
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;?acl
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/"> 🟠 – Always returns canned response
+  <Owner>
+    <ID>string</ID>
+    <DisplayName>string</DisplayName>
+  </Owner>
+  <AccessControlList>
+    <Grant>
+      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
+        <ID>string</ID>
+        <DisplayName>string</DisplayName>
+      </Grantee>
+      <Permission>FULL_CONTROL</Permission>   🟠 – Always returns FULL_CONTROL
+    </Grant>
+  </AccessControlList>
+</AccessControlPolicy>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchKey
+
+</td>
+<td align="left">
+
+Returned if the key does not exist.
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned due to technical reasons.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
 
 </td>
 </tr>
