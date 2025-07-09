@@ -156,20 +156,25 @@ The account ID is 15 base10 (i.e. 0-9) digit string. It is padded with leading z
 
 # **1.2. Endpoints**
 
-Available S4 endpoints:
+For object storage (**S3**) requests:
 
 | Endpoint | Location |
 | --- | --- |
-| **eu-central-1.s4.mega.io** | Amsterdam |
-| **eu-central-2.s4.mega.io** | Bettembourg |
-| **ca-central-1.s4.mega.io** | Montreal |
-| **ca-west-1.s4.mega.io** | Vancouver |
+| **s3.eu-central-1.s4.mega.io** | Amsterdam |
+| **s3.eu-central-2.s4.mega.io** | Bettembourg |
+| **s3.ca-central-1.s4.mega.io** | Montreal |
+| **s3.ca-west-1.s4.mega.io** | Vancouver |
 
-**Ensure to prefix the appropriate service code to the endpoint when constructing the API URL:**
-* For object storage/S3, use prefix `s3`. e.g.: `s3.eu-central-1.s4.mega.io`
-* For IAM, use prefix `iam`. e.g.: `iam.eu-central-1.s4.mega.io`
+For **IAM** requests:
 
-Please note the endpoint [g.s4.mega.io](http://g.s4.mega.io/) is also available which currently points to `eu-central-1.s4.mega.io`.
+| Endpoint | Location |
+| --- | --- |
+| **iam.eu-central-1.s4.mega.io** | Amsterdam |
+| **iam.eu-central-2.s4.mega.io** | Bettembourg |
+| **iam.ca-central-1.s4.mega.io** | Montreal |
+| **iam.ca-west-1.s4.mega.io** | Vancouver |
+
+Please note the endpoints [s3.g.s4.mega.io](http://s3.g.s4.mega.io/) and [iam.g.s4.mega.io](http://iam.g.s4.mega.io/) are also available which currently point to `s3.eu-central-1.s4.mega.io` and `iam.eu-central-1.s4.mega.io` respectively.
 
 Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
 
