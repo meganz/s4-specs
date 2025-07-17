@@ -4218,6 +4218,23 @@ Returned if the request body contains invalid XML document.
 <tr>
 <td align="left">
 
+UserKeyMustBeSpecified
+
+</td>
+<td align="left">
+
+Returned if the request includes an object with an empty key.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 BadDigest
 
 </td>
