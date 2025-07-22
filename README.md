@@ -5602,7 +5602,7 @@ x-amz-server-side-encryption-customer-key-MD5
 
 ```xml
 <CopyPartResult>
-   <ETag>string</ETag>
+   <ETag>string</ETag>          🟠 – ETag is MD5 digest of the complete source object and the part number as the suffix
    <LastModified>timestamp</LastModified>
 </CopyPartResult>
 ```
