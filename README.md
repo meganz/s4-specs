@@ -4270,7 +4270,7 @@ x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm`
 <Delete xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
    <Object>
       <Key>string</Key>
-      <VersionId>string</VersionId>   🔴 - NOT supported (ignored)
+      <VersionId>string</VersionId>   🔴 - NOT supported
    </Object>
    ...
    <Quiet>boolean</Quiet>
