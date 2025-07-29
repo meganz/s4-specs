@@ -171,7 +171,7 @@ For object storage (**S3**) requests:
 | Endpoint | Location |
 | --- | --- |
 | **s3.eu-central-1.s4.mega.io** | Amsterdam |
-| **s3.eu-central-2.s4.mega.io** | Bettembourg |
+| **s3.eu-central-2.s4.mega.io** | Luxembourg |
 | **s3.ca-central-1.s4.mega.io** | Montreal |
 | **s3.ca-west-1.s4.mega.io** | Vancouver |
 
@@ -180,7 +180,7 @@ For **IAM** requests:
 | Endpoint | Location |
 | --- | --- |
 | **iam.eu-central-1.s4.mega.io** | Amsterdam |
-| **iam.eu-central-2.s4.mega.io** | Bettembourg |
+| **iam.eu-central-2.s4.mega.io** | Luxembourg |
 | **iam.ca-central-1.s4.mega.io** | Montreal |
 | **iam.ca-west-1.s4.mega.io** | Vancouver |
 
