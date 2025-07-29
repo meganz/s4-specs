@@ -3427,6 +3427,18 @@ If-None-Match: `IfNoneMatch`
 <tr>
 <td align="left">
 
+If-Unmodified-Since: `IfUnmodifiedSince`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 Range: Range
 
 </td>
@@ -3605,6 +3617,24 @@ x-amz-meta-*
 <td align="left">Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.</td>
 <td align="left">416 Requested Range Not Satisfiable</td>
 </tr>
+<tr>
+<td align="left">PreconditionFailed</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-Match` or `If-Unmodified-Since` did not hold. When both headers are present, if the `If-Match` condition evaluates to true, `If-Unmodified-Since` will not be evaluated.
+
+</td>
+<td align="left">412 Precondition Failed</td>
+</tr>
+<tr>
+<td align="left">NotModified</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-None-Match` or `If-Modified-Since` did not hold. When both headers are present, if the `If-None-Match` condition evaluates to true, `If-Modified-Since` will not be evaluated.
+
+</td>
+<td align="left">304 Not Modified</td>
+</tr>
 </table>
 
 ## HeadObject
@@ -3758,6 +3788,18 @@ If-Modified-Since: `IfModifiedSince`
 <td align="left">
 
 If-None-Match: `IfNoneMatch`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Unmodified-Since: `IfUnmodifiedSince`
 
 </td>
 <td align="left">
@@ -3958,6 +4000,24 @@ x-amz-storage-class
 <td align="left">InvalidRange</td>
 <td align="left">Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.</td>
 <td align="left">416 Requested Range Not Satisfiable</td>
+</tr>
+<tr>
+<td align="left">PreconditionFailed</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-Match` or `If-Unmodified-Since` did not hold. When both headers are present, if the `If-Match` condition evaluates to true, `If-Unmodified-Since` will not be evaluated.
+
+</td>
+<td align="left">412 Precondition Failed</td>
+</tr>
+<tr>
+<td align="left">NotModified</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-None-Match` or `If-Modified-Since` did not hold. When both headers are present, if the `If-None-Match` condition evaluates to true, `If-Modified-Since` will not be evaluated.
+
+</td>
+<td align="left">304 Not Modified</td>
 </tr>
 </table>
 
