@@ -4274,7 +4274,10 @@ x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm`
 <Delete xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
    <Object>
       <Key>string</Key>
-      <VersionId>string</VersionId>   🔴 - NOT supported
+      <ETag>string</ETag>   🔴 - NOT supported
+      <LastModifiedTime>timestamp</LastModifiedTime>    🔴 - NOT supported
+      <Size>long</Size>     🔴 - NOT supported
+      <VersionId>string</VersionId>     🔴 - NOT supported
    </Object>
    ...
    <Quiet>boolean</Quiet>
