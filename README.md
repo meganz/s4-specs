@@ -77,52 +77,56 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-            -   [CreateMultipartUpload](#createmultipartupload)
+            -   [DeleteObjects](#deleteobjects)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [UploadPart](#uploadpart)
+            -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-            -   [UploadPartCopy](#uploadpartcopy)
+            -   [UploadPart](#uploadpart)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [ListParts](#listparts)
+            -   [UploadPartCopy](#uploadpartcopy)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [ListParts](#listparts)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
-            -   [ListMultipartUploads](#listmultipartuploads)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-18)
                 -   [Success Response](#success-response-18)
                 -   [Errors](#errors-18)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-19)
                 -   [Success Response](#success-response-19)
                 -   [Errors](#errors-19)
-            -   [PutObjectAcl](#putobjectacl)
-            -   [GetObjectAcl](#getobjectacl)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [PutObjectAcl](#putobjectacl)
+            -   [GetObjectAcl](#getobjectacl)
                 -   [Request](#request-21)
                 -   [Success Response](#success-response-21)
                 -   [Errors](#errors-21)
-            -   [GetBucketPolicy](#getbucketpolicy)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
                 -   [Request](#request-22)
                 -   [Success Response](#success-response-22)
                 -   [Errors](#errors-22)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
+            -   [GetBucketPolicy](#getbucketpolicy)
                 -   [Request](#request-23)
                 -   [Success Response](#success-response-23)
                 -   [Errors](#errors-23)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-24)
+                -   [Success Response](#success-response-24)
+                -   [Errors](#errors-24)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -136,29 +140,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
-                -   [Request](#request-24)
-                -   [Success Response](#success-response-24)
-                -   [Errors](#errors-24)
-            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-25)
                 -   [Success Response](#success-response-25)
                 -   [Errors](#errors-25)
-            -   [ListPolicies](#listpolicies)
+            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-26)
                 -   [Success Response](#success-response-26)
                 -   [Errors](#errors-26)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
+            -   [ListPolicies](#listpolicies)
                 -   [Request](#request-27)
                 -   [Success Response](#success-response-27)
                 -   [Errors](#errors-27)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
                 -   [Request](#request-28)
                 -   [Success Response](#success-response-28)
                 -   [Errors](#errors-28)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
                 -   [Request](#request-29)
                 -   [Success Response](#success-response-29)
                 -   [Errors](#errors-29)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+                -   [Request](#request-30)
+                -   [Success Response](#success-response-30)
+                -   [Errors](#errors-30)
 
 # **1. Common Details**
 
@@ -4149,6 +4153,286 @@ Note that if the object with the given key does not exist, `DeleteObject` still 
 <td align="left">NoSuchBucket</td>
 <td align="left">Returned if the bucket which the object is attempted to be deleted from does not exist.</td>
 <td align="left">404 Not Found</td>
+</tr>
+</table>
+
+## DeleteObjects
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">POST</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?delete
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?delete
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-bypass-governance-retention: `BypassGovernanceRetention`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-mfa: `MFA`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Delete xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <Object>
+      <Key>string</Key>
+      <ETag>string</ETag>   🔴 - NOT supported
+      <LastModifiedTime>timestamp</LastModifiedTime>    🔴 - NOT supported
+      <Size>long</Size>     🔴 - NOT supported
+      <VersionId>string</VersionId>     🔴 - NOT supported
+   </Object>
+   ...
+   <Quiet>boolean</Quiet>
+</Delete>
+```
+
+</td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<DeleteResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <Deleted>
+      <Key>string</Key>
+   </Deleted>
+   ...
+   <Error>
+      <Code>string</Code>
+      <Key>string</Key>
+      <Message>string</Message>
+   </Error>
+   ...
+</DeleteResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+Note that even if any of the objects listed in the request do not exist, `DeleteObjects` will consider the operation successful. It will return `200 OK` with the response body indicating such objects having been deleted.
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidRequest
+
+</td>
+<td align="left">
+
+Returned if the  `Content-MD5`  header is missing.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+MissingRequestBodyError
+
+</td>
+<td align="left">
+
+Returned if the request body is empty.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+MalformedXML
+
+</td>
+<td align="left">
+
+Returned if the request body contains invalid XML document.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+UserKeyMustBeSpecified
+
+</td>
+<td align="left">
+
+Returned if the request includes an object with an empty key.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+BadDigest
+
+</td>
+<td align="left">
+
+Returned if the calculated MD5 digest does not match the one provided in the  `Content-MD5`  header.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
 </tr>
 </table>
 
