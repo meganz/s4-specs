@@ -4206,6 +4206,78 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 <tr>
 <td align="left">
 
+Content-MD5: `Base64EncodedMD5`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32: `Base64EncodedCRC32`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c: `Base64EncodedCRC32C`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc64nvme: `Base64EncodedCRC64NVME`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1: `Base64EncodedSHA1`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256: `Base64EncodedSHA256`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 x-amz-request-payer: `RequestPayer`
 
 </td>
@@ -4357,7 +4429,11 @@ InvalidRequest
 </td>
 <td align="left">
 
-Returned if the  `Content-MD5`  header is missing.
+Returned if:
+    1. Neither the  `Content-MD5`  nor  `x-amz-checksum-*`  header is present in the request.
+    1. More than one  `x-amz-checksum-*`  header is present in the request.
+    1. The algorithm type specified in the  `x-amz-checksum-*`  header is invalid.
+    1. The value of the  `x-amz-checksum-*`  header is invalid.
 
 </td>
 <td align="left">
