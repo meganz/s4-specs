@@ -4445,6 +4445,23 @@ Returned if:
 <tr>
 <td align="left">
 
+InvalidDigest
+
+</td>
+<td align="left">
+
+Returned if the value of the  `Content-MD5`  header is invalid.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 MissingRequestBodyError
 
 </td>
