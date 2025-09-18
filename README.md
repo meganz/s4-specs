@@ -4518,7 +4518,7 @@ BadDigest
 </td>
 <td align="left">
 
-Returned if the calculated MD5 digest does not match the one provided in the  `Content-MD5`  header.
+Returned if the calculated MD5 digest or checksum does not match the one provided in the  `Content-MD5`  or  `x-amz-checksum-*`  header respectively.
 
 </td>
 <td align="left">
