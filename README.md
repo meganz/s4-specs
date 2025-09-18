@@ -4430,10 +4430,10 @@ InvalidRequest
 <td align="left">
 
 Returned if:
-    1. Neither the  `Content-MD5`  nor  `x-amz-checksum-*`  header is present in the request.
-    1. More than one  `x-amz-checksum-*`  header is present in the request.
-    1. The algorithm type specified in the  `x-amz-checksum-*`  header is invalid.
-    1. The value of the  `x-amz-checksum-*`  header is invalid.
+1. Neither the  `Content-MD5`  nor  `x-amz-checksum-*`  header is present in the request.
+1. More than one  `x-amz-checksum-*`  header is present in the request.
+1. The algorithm type specified in the  `x-amz-checksum-*`  header is invalid.
+1. The value of the  `x-amz-checksum-*`  header is invalid.
 
 </td>
 <td align="left">
