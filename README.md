@@ -1840,6 +1840,30 @@ Expires
 <tr>
 <td align="left">
 
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 x-amz-acl:  `ACL`
 
 </td>
@@ -6533,6 +6557,30 @@ uploadId
 <tr>
 <th align="left">Specific Headers</th>
 <th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
 </tr>
 <tr>
 <td align="left">
