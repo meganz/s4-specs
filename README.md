@@ -2625,6 +2625,30 @@ Expires
 <tr>
 <td align="left">
 
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 x-amz-checksum-algorithm
 
 </td>
@@ -3213,6 +3237,17 @@ x-amz-request-charged
 <td align="left">AccessDenied</td>
 <td align="left">In addition to usual policy validation errors, this is returned if policy validation fails on the copy source.</td>
 <td align="left">403 Forbidden</td>
+</tr>
+<tr>
+<td align="left">PreconditionFailed</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions for the source `x-amz-copy-source-if-match`, `x-amz-copy-source-if-modified-since`, 
+`x-amz-copy-source-if-none-match`, `x-amz-copy-source-if-unmodified-since` or if one of the specified preconditions for the destination 
+`If-Match` or `If-None-Match` did not hold.
+
+</td>
+<td align="left">412 Precondition Failed</td>
 </tr>
 <tr>
 <td align="left">Internal Error</td>
