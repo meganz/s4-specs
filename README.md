@@ -43,72 +43,90 @@ This document describes S4 coverage of IAM and S3 APIs.
                 -   [Request](#request-4)
                 -   [Success Response](#success-response-4)
                 -   [Errors](#errors-4)
-        -   [2.2.2. Objects](#222-objects)
-            -   [ListObjects](#listobjects)
+            -   [PutBucketAcl](#putbucketacl)
+            -   [GetBucketAcl](#getbucketacl)
                 -   [Request](#request-5)
                 -   [Success Response](#success-response-5)
                 -   [Errors](#errors-5)
-            -   [ListObjectsV2](#listobjectsv2)
+        -   [2.2.2. Objects](#222-objects)
+            -   [ListObjects](#listobjects)
                 -   [Request](#request-6)
                 -   [Success Response](#success-response-6)
                 -   [Errors](#errors-6)
-            -   [PutObject](#putobject)
+            -   [ListObjectsV2](#listobjectsv2)
                 -   [Request](#request-7)
                 -   [Success Response](#success-response-7)
                 -   [Errors](#errors-7)
-            -   [CopyObject](#copyobject)
+            -   [PutObject](#putobject)
                 -   [Request](#request-8)
                 -   [Success Response](#success-response-8)
                 -   [Errors](#errors-8)
-            -   [GetObject](#getobject)
+            -   [CopyObject](#copyobject)
                 -   [Request](#request-9)
                 -   [Success Response](#success-response-9)
                 -   [Errors](#errors-9)
-            -   [HeadObject](#headobject)
+            -   [GetObject](#getobject)
                 -   [Request](#request-10)
                 -   [Success Response](#success-response-10)
                 -   [Errors](#errors-10)
-            -   [DeleteObject](#deleteobject)
+            -   [HeadObject](#headobject)
                 -   [Request](#request-11)
                 -   [Success Response](#success-response-11)
                 -   [Errors](#errors-11)
-            -   [CreateMultipartUpload](#createmultipartupload)
+            -   [DeleteObject](#deleteobject)
                 -   [Request](#request-12)
                 -   [Success Response](#success-response-12)
                 -   [Errors](#errors-12)
-            -   [UploadPart](#uploadpart)
+            -   [DeleteObjects](#deleteobjects)
                 -   [Request](#request-13)
                 -   [Success Response](#success-response-13)
                 -   [Errors](#errors-13)
-            -   [ListParts](#listparts)
+            -   [CreateMultipartUpload](#createmultipartupload)
                 -   [Request](#request-14)
                 -   [Success Response](#success-response-14)
                 -   [Errors](#errors-14)
-            -   [CompleteMultipartUpload](#completemultipartupload)
+            -   [UploadPart](#uploadpart)
                 -   [Request](#request-15)
                 -   [Success Response](#success-response-15)
                 -   [Errors](#errors-15)
-            -   [ListMultipartUploads](#listmultipartuploads)
+            -   [UploadPartCopy](#uploadpartcopy)
                 -   [Request](#request-16)
                 -   [Success Response](#success-response-16)
                 -   [Errors](#errors-16)
-            -   [AbortMultipartUpload](#abortmultipartupload)
+            -   [ListParts](#listparts)
                 -   [Request](#request-17)
                 -   [Success Response](#success-response-17)
                 -   [Errors](#errors-17)
-        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
-            -   [PutBucketPolicy](#putbucketpolicy)
+            -   [CompleteMultipartUpload](#completemultipartupload)
                 -   [Request](#request-18)
                 -   [Success Response](#success-response-18)
                 -   [Errors](#errors-18)
-            -   [GetBucketPolicy](#getbucketpolicy)
+            -   [ListMultipartUploads](#listmultipartuploads)
                 -   [Request](#request-19)
                 -   [Success Response](#success-response-19)
                 -   [Errors](#errors-19)
-            -   [DeleteBucketPolicy](#deletebucketpolicy)
+            -   [AbortMultipartUpload](#abortmultipartupload)
                 -   [Request](#request-20)
                 -   [Success Response](#success-response-20)
                 -   [Errors](#errors-20)
+            -   [PutObjectAcl](#putobjectacl)
+            -   [GetObjectAcl](#getobjectacl)
+                -   [Request](#request-21)
+                -   [Success Response](#success-response-21)
+                -   [Errors](#errors-21)
+        -   [2.2.3. Policies (on Buckets)](#223-policies-on-buckets)
+            -   [PutBucketPolicy](#putbucketpolicy)
+                -   [Request](#request-22)
+                -   [Success Response](#success-response-22)
+                -   [Errors](#errors-22)
+            -   [GetBucketPolicy](#getbucketpolicy)
+                -   [Request](#request-23)
+                -   [Success Response](#success-response-23)
+                -   [Errors](#errors-23)
+            -   [DeleteBucketPolicy](#deletebucketpolicy)
+                -   [Request](#request-24)
+                -   [Success Response](#success-response-24)
+                -   [Errors](#errors-24)
     -   [2.3. Presigned URL](#23-presigned-url)
         -   [Authentication](#authentication)
         -   [Signature Version](#signature-version)
@@ -122,29 +140,29 @@ This document describes S4 coverage of IAM and S3 APIs.
     -   [3.3. Services](#33-services)
         -   [3.3.1. Policies](#331-policies)
             -   [GetPolicy](#getpolicy)
-                -   [Request](#request-21)
-                -   [Success Response](#success-response-21)
-                -   [Errors](#errors-21)
-            -   [GetPolicyVersion](#getpolicyversion)
-                -   [Request](#request-22)
-                -   [Success Response](#success-response-22)
-                -   [Errors](#errors-22)
-            -   [ListPolicies](#listpolicies)
-                -   [Request](#request-23)
-                -   [Success Response](#success-response-23)
-                -   [Errors](#errors-23)
-            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
-                -   [Request](#request-24)
-                -   [Success Response](#success-response-24)
-                -   [Errors](#errors-24)
-            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
                 -   [Request](#request-25)
                 -   [Success Response](#success-response-25)
                 -   [Errors](#errors-25)
-            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+            -   [GetPolicyVersion](#getpolicyversion)
                 -   [Request](#request-26)
                 -   [Success Response](#success-response-26)
                 -   [Errors](#errors-26)
+            -   [ListPolicies](#listpolicies)
+                -   [Request](#request-27)
+                -   [Success Response](#success-response-27)
+                -   [Errors](#errors-27)
+            -   [ListAttachedUserPolicies \| ListAttachedGroupPolicies](#listattacheduserpolicies--listattachedgrouppolicies)
+                -   [Request](#request-28)
+                -   [Success Response](#success-response-28)
+                -   [Errors](#errors-28)
+            -   [AttachUserPolicy \| AttachGroupPolicy](#attachuserpolicy--attachgrouppolicy)
+                -   [Request](#request-29)
+                -   [Success Response](#success-response-29)
+                -   [Errors](#errors-29)
+            -   [DetachUserPolicy \| DetachGroupPolicy](#detachuserpolicy--detachgrouppolicy)
+                -   [Request](#request-30)
+                -   [Success Response](#success-response-30)
+                -   [Errors](#errors-30)
 
 # **1. Common Details**
 
@@ -156,20 +174,25 @@ The account ID is 15 base10 (i.e. 0-9) digit string. It is padded with leading z
 
 # **1.2. Endpoints**
 
-Available S4 endpoints:
+For object storage (**S3**) requests:
 
 | Endpoint | Location |
 | --- | --- |
-| **eu-central-1.s4.mega.io** | Amsterdam |
-| **eu-central-2.s4.mega.io** | Bettembourg |
-| **ca-central-1.s4.mega.io** | Montreal |
-| **ca-west-1.s4.mega.io** | Vancouver |
+| **s3.eu-central-1.s4.mega.io** | Amsterdam |
+| **s3.eu-central-2.s4.mega.io** | Luxembourg |
+| **s3.ca-central-1.s4.mega.io** | Montreal |
+| **s3.ca-west-1.s4.mega.io** | Vancouver |
 
-**Ensure to prefix the appropriate service code to the endpoint when constructing the API URL:**
-* For object storage/S3, use prefix `s3`. e.g.: `s3.eu-central-1.s4.mega.io`
-* For IAM, use prefix `iam`. e.g.: `iam.eu-central-1.s4.mega.io`
+For **IAM** requests:
 
-Please note the endpoint [g.s4.mega.io](http://g.s4.mega.io/) is also available which currently points to `eu-central-1.s4.mega.io`.
+| Endpoint | Location |
+| --- | --- |
+| **iam.eu-central-1.s4.mega.io** | Amsterdam |
+| **iam.eu-central-2.s4.mega.io** | Luxembourg |
+| **iam.ca-central-1.s4.mega.io** | Montreal |
+| **iam.ca-west-1.s4.mega.io** | Vancouver |
+
+Please note the endpoints [s3.g.s4.mega.io](http://s3.g.s4.mega.io/) and [iam.g.s4.mega.io](http://iam.g.s4.mega.io/) are also available which currently point to `s3.eu-central-1.s4.mega.io` and `iam.eu-central-1.s4.mega.io` respectively.
 
 Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
 
@@ -1097,6 +1120,169 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 ### Errors
 None
 
+## PutBucketAcl
+
+This service is currently not supported and will always return `AccessControlListNotSupported` error (400 Bad Request).
+
+## GetBucketAcl
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?acl
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?acl
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/"> 🟠 – Always returns canned response
+  <Owner>
+    <ID>string</ID>
+    <DisplayName>string</DisplayName>
+  </Owner>
+  <AccessControlList>
+    <Grant>
+      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
+        <ID>string</ID>
+        <DisplayName>string</DisplayName>
+      </Grantee>
+      <Permission>FULL_CONTROL</Permission>   🟠 – Always returns FULL_CONTROL
+    </Grant>
+  </AccessControlList>
+</AccessControlPolicy>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchBucket
+
+</td>
+<td align="left">
+
+Returned in case  `<bucket_name>`  does not exist.
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned due to technical reasons.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
+</tr>
+</table>
+
 # **2.2.2. Objects**
 
 ## ListObjects
@@ -1146,7 +1332,7 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 </tr>
 <tr>
 <td align="left">encoding-type</td>
-<td align="left">&#128308; NO</td>
+<td align="left">&#128994; YES</td>
 </tr>
 <tr>
 <td align="left">marker</td>
@@ -1356,7 +1542,7 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 </tr>
 <tr>
 <td align="left">encoding-type</td>
-<td align="left">&#128308; NO</td>
+<td align="left">&#128994; YES</td>
 </tr>
 <tr>
 <td align="left">fetch-owner</td>
@@ -1575,7 +1761,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1587,7 +1773,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1599,7 +1785,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1611,7 +1797,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1635,7 +1821,7 @@ Content-Type
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -1647,7 +1833,31 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -1780,6 +1990,18 @@ x-amz-grant-write-acp: `GrantWriteACP`
 <td align="left">
 
 &#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -2336,7 +2558,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2348,7 +2570,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2360,7 +2582,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2372,7 +2594,19 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+Content-Type
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -2384,7 +2618,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2571,12 +2805,24 @@ x-amz-grant-write-acp: `GrantWriteACP`
 <tr>
 <td align="left">
 
+x-amz-meta-*
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 x-amz-metadata-directive
 
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3213,6 +3459,18 @@ If-None-Match: `IfNoneMatch`
 <tr>
 <td align="left">
 
+If-Unmodified-Since: `IfUnmodifiedSince`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 Range: Range
 
 </td>
@@ -3253,7 +3511,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3265,7 +3523,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3277,7 +3535,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3289,7 +3547,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3313,7 +3571,7 @@ Content-Type
 </td>
 <td align="left">
 
-&#128992; Partial, only if set by URI parameter
+&#128994; YES
 
 </td>
 </tr>
@@ -3337,7 +3595,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3345,6 +3603,18 @@ Expires
 <td align="left">
 
 Last-Modified
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
 
 </td>
 <td align="left">
@@ -3378,6 +3648,24 @@ Last-Modified
 <td align="left">InvalidRange</td>
 <td align="left">Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.</td>
 <td align="left">416 Requested Range Not Satisfiable</td>
+</tr>
+<tr>
+<td align="left">PreconditionFailed</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-Match` or `If-Unmodified-Since` did not hold. When both headers are present, if the `If-Match` condition evaluates to true, `If-Unmodified-Since` will not be evaluated.
+
+</td>
+<td align="left">412 Precondition Failed</td>
+</tr>
+<tr>
+<td align="left">NotModified</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-None-Match` or `If-Modified-Since` did not hold. When both headers are present, if the `If-None-Match` condition evaluates to true, `If-Modified-Since` will not be evaluated.
+
+</td>
+<td align="left">304 Not Modified</td>
 </tr>
 </table>
 
@@ -3543,6 +3831,18 @@ If-None-Match: `IfNoneMatch`
 <tr>
 <td align="left">
 
+If-Unmodified-Since: `IfUnmodifiedSince`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 Range: Range
 
 </td>
@@ -3578,12 +3878,12 @@ Range: Range
 <tr>
 <td align="left">
 
-_Cache-Control_
+Cache-Control
 
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3595,7 +3895,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3607,7 +3907,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3619,7 +3919,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3667,7 +3967,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3675,6 +3975,18 @@ Expires
 <td align="left">
 
 Last-Modified
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
 
 </td>
 <td align="left">
@@ -3720,6 +4032,24 @@ x-amz-storage-class
 <td align="left">InvalidRange</td>
 <td align="left">Returned if the request has a range header which is not satisfiable for the entity being downloaded. This means a byte range spec (e.g., bytes=50-100) where the starting byte offset is greater than the entity size, or a suffix byte range spec (e.g., bytes=-0) where the suffix byte is zero.</td>
 <td align="left">416 Requested Range Not Satisfiable</td>
+</tr>
+<tr>
+<td align="left">PreconditionFailed</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-Match` or `If-Unmodified-Since` did not hold. When both headers are present, if the `If-Match` condition evaluates to true, `If-Unmodified-Since` will not be evaluated.
+
+</td>
+<td align="left">412 Precondition Failed</td>
+</tr>
+<tr>
+<td align="left">NotModified</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions `If-None-Match` or `If-Modified-Since` did not hold. When both headers are present, if the `If-None-Match` condition evaluates to true, `If-Modified-Since` will not be evaluated.
+
+</td>
+<td align="left">304 Not Modified</td>
 </tr>
 </table>
 
@@ -3910,6 +4240,379 @@ Note that if the object with the given key does not exist, `DeleteObject` still 
 </tr>
 </table>
 
+## DeleteObjects
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">POST</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/?delete
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/?delete
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+Content-MD5: `Base64EncodedMD5`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32: `Base64EncodedCRC32`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc32c: `Base64EncodedCRC32C`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-crc64nvme: `Base64EncodedCRC64NVME`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha1: `Base64EncodedSHA1`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-checksum-sha256: `Base64EncodedSHA256`
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer: `RequestPayer`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner: `ExpectedBucketOwner`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-bypass-governance-retention: `BypassGovernanceRetention`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-mfa: `MFA`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-sdk-checksum-algorithm: `ChecksumAlgorithm`
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Delete xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <Object>
+      <Key>string</Key>
+      <ETag>string</ETag>   🔴 - NOT supported
+      <LastModifiedTime>timestamp</LastModifiedTime>    🔴 - NOT supported
+      <Size>long</Size>     🔴 - NOT supported
+      <VersionId>string</VersionId>     🔴 - NOT supported
+   </Object>
+   ...
+   <Quiet>boolean</Quiet>
+</Delete>
+```
+
+</td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<DeleteResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <Deleted>
+      <Key>string</Key>
+   </Deleted>
+   ...
+   <Error>
+      <Code>string</Code>
+      <Key>string</Key>
+      <Message>string</Message>
+   </Error>
+   ...
+</DeleteResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+Note that even if any of the objects listed in the request do not exist, `DeleteObjects` will consider the operation successful. It will return `200 OK` with the response body indicating such objects having been deleted.
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidRequest
+
+</td>
+<td align="left">
+
+Returned if:
+1. Neither the  `Content-MD5`  nor  `x-amz-checksum-*`  header is present in the request.
+1. More than one  `x-amz-checksum-*`  header is present in the request.
+1. The algorithm type specified in the  `x-amz-checksum-*`  header is invalid.
+1. The value of the  `x-amz-checksum-*`  header is invalid.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidDigest
+
+</td>
+<td align="left">
+
+Returned if the value of the  `Content-MD5`  header is invalid.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+MissingRequestBodyError
+
+</td>
+<td align="left">
+
+Returned if the request body is empty.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+MalformedXML
+
+</td>
+<td align="left">
+
+Returned if the request body contains invalid XML document.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+UserKeyMustBeSpecified
+
+</td>
+<td align="left">
+
+Returned if the request includes an object with an empty key.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+BadDigest
+
+</td>
+<td align="left">
+
+Returned if the calculated MD5 digest or checksum does not match the one provided in the  `Content-MD5`  or  `x-amz-checksum-*`  header respectively.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+</table>
+
 ## CreateMultipartUpload
 
 ### Request
@@ -3985,7 +4688,7 @@ Cache-Control
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3997,7 +4700,7 @@ Content-Disposition
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4009,7 +4712,7 @@ Content-Encoding
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4021,7 +4724,7 @@ Content-Language
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4033,7 +4736,7 @@ Content-Type
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4045,7 +4748,7 @@ Expires
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -4094,6 +4797,18 @@ x-amz-grant-write-acp
 <td align="left">
 
 &#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-meta-*
+
+</td>
+<td align="left">
+
+&#128994; YES
 
 </td>
 </tr>
@@ -4983,6 +5698,529 @@ Returned in case the request failed to complete, e.g. storage timeout, etc.
 </tr>
 </table>
 
+## UploadPartCopy
+
+UploadPartCopy is supported for full object copies only.
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">PUT</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+uploadId
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+</tr>
+<tr>
+<td align="left">
+
+partNumber
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source
+
+</td>
+<td align="left">
+
+&#128994; YES (non-access-point format only i.e. bucket/object/key)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-match
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-modified-since
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-none-match
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-if-unmodified-since
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-range
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-source-expected-bucket-owner
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-copy-source-version-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-charged
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-aws-kms-key-id
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-bucket-key-enabled
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-algorithm
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-server-side-encryption-customer-key-MD5
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<CopyPartResult>
+   <ETag>string</ETag>          🟠 – ETag is MD5 digest of the complete source object and the part number as the suffix
+   <LastModified>timestamp</LastModified>
+</CopyPartResult>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+InvalidArgument
+
+</td>
+<td align="left">
+
+Returned in case of invalid x-amz-copy-source-range.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidRequest
+
+</td>
+<td align="left">
+
+Returned in case of invalid x-amz-copy-source-range (the lower range bound is greater than the source file size).
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchKey
+
+</td>
+<td align="left">
+
+Returned if the copy source specified by x-amz-copy-source does not exist.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+ServiceUnavailable
+
+</td>
+<td align="left">
+
+Returned in case server is too crowded.
+
+</td>
+<td align="left">
+
+503 Service Unavailable
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InvalidPart
+
+</td>
+<td align="left">
+
+***Note:*** although under the S3 standard, InvalidPart is not an expected error for UploadPart operation, S4 applies several checks according to its own part restrictions:
+1. The uploaded part have inconsistent size with the rest of uploaded parts. For an N-parts upload, S4 requires parts in the range 1 to N-1 to have the same size, the part N can have a different size but must not be larger than previous parts. This error will cause the entire upload to be aborted.<br>**Note:** the S3 standard does not impose this requirement.
+1. The part is empty.<br>**Note:** the S3 standard does not impose this requirement.
+1. This part has already been uploaded. S4 does not allow re-uploading parts.<br>**Note:** the S3 standard does not impose this requirement.
+
+</td>
+<td align="left">400 Bad Request</td>
+</tr>
+<tr>
+<td align="left">
+
+EntityTooSmall
+
+</td>
+<td align="left">
+
+Returned in case the size of this (or any previously uploaded) part is smaller than 5MB, unless this is the last part, in which case, the smaller than 5MB size is allowed. Please note that:
+1. This error is S4 deviaton from the S3 standard. Under the S3 standard, the UploadPart request is not expected to return the EntityTooSmall error but only upon the multipart upload completion.
+1. This error will cause the entire upload to be aborted.
+
+</td>
+<td align="left">
+
+400 Bad Request
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchUpload
+
+</td>
+<td align="left">
+
+Returned if:
+- The requested upload ID does not exist or the object key does not belong to the upload with the given ID or
+- The upload has been aborted or completed
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned in case the request failed to complete, e.g. storage timeout, etc.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
+
+</td>
+</tr>
+</table>
+
 ## ListParts
 
 ### Request
@@ -5319,6 +6557,30 @@ uploadId
 <tr>
 <th align="left">Specific Headers</th>
 <th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
 </tr>
 <tr>
 <td align="left">
@@ -5681,7 +6943,7 @@ Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1
 </tr>
 <tr>
 <td align="left">&emsp;encoding-type</td>
-<td align="left">&emsp;&#128308; NO</td>
+<td align="left">&emsp;&#128994; YES</td>
 </tr>
 <tr>
 <td align="left">&emsp;key-marker</td>
@@ -5939,6 +7201,181 @@ Returned for one of the following reasons:
 <td align="left">
 
 404 Not Found
+
+</td>
+</tr>
+</table>
+
+## PutObjectAcl
+
+This service is currently not supported and will always return `AccessControlListNotSupported` error (400 Bad Request).
+
+## GetObjectAcl
+
+### Request
+
+<table>
+<tr>
+<th align="left" colspan="2">Method</th>
+</tr>
+<tr>
+<td align="left" colspan="2">GET</td>
+</tr>
+<tr>
+<th align="left">URL (alternatives)</th>
+<th align="left">Note</th>
+</tr>
+<tr>
+<td align="left">
+
+/&lt;Key&gt;?acl
+
+</td>
+<td align="left">
+
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+/`<bucket_name>`/&lt;Key&gt;?acl
+
+</td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">URL Params</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-expected-bucket-owner _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+x-amz-request-payer _(optional)_
+
+</td>
+<td align="left">
+
+&#128308; NO
+
+</td>
+</tr>
+<tr>
+<th align="left">Body</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;empty&gt;</i></td>
+<td align="left"></td>
+</tr>
+</table>
+
+### Success Response
+
+<table>
+<tr>
+<th align="left" colspan="2">Status Code</th>
+</tr>
+<tr>
+<td align="left" colspan="2">200 OK</td>
+</tr>
+<tr>
+<th align="left">Specific Headers</th>
+<th align="left">Supported</th>
+</tr>
+<tr>
+<td align="left"><i>&lt;none&gt;</i></td>
+<td align="left"></td>
+</tr>
+<tr>
+<th align="left" colspan="2">Body</th>
+</tr>
+<tr>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<AccessControlPolicy xmlns="http://s3.amazonaws.com/doc/2006-03-01/"> 🟠 – Always returns canned response
+  <Owner>
+    <ID>string</ID>
+    <DisplayName>string</DisplayName>
+  </Owner>
+  <AccessControlList>
+    <Grant>
+      <Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CanonicalUser">
+        <ID>string</ID>
+        <DisplayName>string</DisplayName>
+      </Grantee>
+      <Permission>FULL_CONTROL</Permission>   🟠 – Always returns FULL_CONTROL
+    </Grant>
+  </AccessControlList>
+</AccessControlPolicy>
+```
+
+</td>
+</tr>
+</table>
+
+### Errors
+
+<table>
+<tr>
+<th align="left">Error Code</th>
+<th align="left">Description</th>
+<th align="left">HTTP Status Code</th>
+</tr>
+<tr>
+<td align="left">
+
+NoSuchKey
+
+</td>
+<td align="left">
+
+Returned if the key does not exist.
+
+</td>
+<td align="left">
+
+404 Not Found
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+InternalError
+
+</td>
+<td align="left">
+
+Returned due to technical reasons.
+
+</td>
+<td align="left">
+
+500 Internal Server Error
 
 </td>
 </tr>
