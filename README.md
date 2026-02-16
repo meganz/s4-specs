@@ -2625,6 +2625,30 @@ Expires
 <tr>
 <td align="left">
 
+If-Match
+
+</td>
+<td align="left">
+
+&#128994; YES
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
+If-None-Match
+
+</td>
+<td align="left">
+
+&#128994; YES (wildcard `*` only)
+
+</td>
+</tr>
+<tr>
+<td align="left">
+
 x-amz-checksum-algorithm
 
 </td>
@@ -2666,7 +2690,7 @@ x-amz-copy-source-if-match
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2678,7 +2702,7 @@ x-amz-copy-source-if-modified-since
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2690,7 +2714,7 @@ x-amz-copy-source-if-none-match
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -2702,7 +2726,7 @@ x-amz-copy-source-if-unmodified-since
 </td>
 <td align="left">
 
-&#128308; NO
+&#128994; YES
 
 </td>
 </tr>
@@ -3177,7 +3201,22 @@ x-amz-request-charged
 <th align="left" colspan="2">Body</th>
 </tr>
 <tr>
-<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CopyObjectResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <LastModified>timestamp</LastModified>
+   <ETag>string</ETag>
+   <ChecksumCRC32>string</ChecksumCRC32>   🔴 - NOT supported
+   <ChecksumCRC32C>string</ChecksumCRC32C>   🔴 - NOT supported
+   <ChecksumSHA1>string</ChecksumSHA1>   🔴 - NOT supported
+   <ChecksumSHA256>string</ChecksumSHA256>   🔴 - NOT supported
+   <ChecksumCRC64NVME>string</ChecksumCRC64NVME>   🔴 - NOT supported
+</CopyObjectResult>
+```
+
+</td>
 </tr>
 </table>
 
@@ -3215,7 +3254,18 @@ x-amz-request-charged
 <td align="left">403 Forbidden</td>
 </tr>
 <tr>
-<td align="left">Internal Error</td>
+<td align="left">PreconditionFailed</td>
+<td align="left">
+
+Returned if at least one of the specified preconditions for the source `x-amz-copy-source-if-match`, `x-amz-copy-source-if-modified-since`, 
+`x-amz-copy-source-if-none-match`, `x-amz-copy-source-if-unmodified-since` or if one of the specified preconditions for the destination 
+`If-Match` or `If-None-Match` did not hold.
+
+</td>
+<td align="left">412 Precondition Failed</td>
+</tr>
+<tr>
+<td align="left">InternalError</td>
 <td align="left">Returned in the event of internal API error.</td>
 <td align="left">500 Internal Server Error</td>
 </tr>
