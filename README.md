@@ -2642,7 +2642,7 @@ If-None-Match
 </td>
 <td align="left">
 
-&#128994; YES
+&#128994; YES (wildcard `*` only)
 
 </td>
 </tr>
@@ -3201,7 +3201,22 @@ x-amz-request-charged
 <th align="left" colspan="2">Body</th>
 </tr>
 <tr>
-<td align="left" colspan="2"><i>&lt;empty&gt;</i></td>
+<td align="left" colspan="2">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CopyObjectResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+   <LastModified>timestamp</LastModified>
+   <ETag>string</ETag>
+   <ChecksumCRC32>string</ChecksumCRC32>   🔴 - NOT supported
+   <ChecksumCRC32C>string</ChecksumCRC32C>   🔴 - NOT supported
+   <ChecksumSHA1>string</ChecksumSHA1>   🔴 - NOT supported
+   <ChecksumSHA256>string</ChecksumSHA256>   🔴 - NOT supported
+   <ChecksumCRC64NVME>string</ChecksumCRC64NVME>   🔴 - NOT supported
+</CopyObjectResult>
+```
+
+</td>
 </tr>
 </table>
 
@@ -3250,7 +3265,7 @@ Returned if at least one of the specified preconditions for the source `x-amz-co
 <td align="left">412 Precondition Failed</td>
 </tr>
 <tr>
-<td align="left">Internal Error</td>
+<td align="left">InternalError</td>
 <td align="left">Returned in the event of internal API error.</td>
 <td align="left">500 Internal Server Error</td>
 </tr>
