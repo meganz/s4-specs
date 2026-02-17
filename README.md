@@ -192,8 +192,6 @@ For **IAM** requests:
 | **iam.ca-central-1.s4.mega.io** | Montreal |
 | **iam.ca-west-1.s4.mega.io** | Vancouver |
 
-Please note the endpoints [s3.g.s4.mega.io](http://s3.g.s4.mega.io/) and [iam.g.s4.mega.io](http://iam.g.s4.mega.io/) are also available which currently point to `s3.eu-central-1.s4.mega.io` and `iam.eu-central-1.s4.mega.io` respectively.
-
 Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
 
 # **1.3. Errors**
