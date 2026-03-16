@@ -6917,6 +6917,7 @@ InvalidPart
 
 Returned for one of the following reasons:
 1. The part list in the completion request does not include all the uploaded parts.<br>**Note:** the S3 standard does not impose this requirement.
+1. The part numbers in the completion request are not contiguous starting at 1. S4 requires the completed parts to form a consecutive sequence (1, 2, ..., N) with no gaps. For example, completing with parts 1, 2, 4 (missing part 3) will fail.<br>**Note:** the S3 standard allows completing a multipart upload with non-contiguous part numbers, assembling the object from the provided parts in ascending order.
 1. One or more specified parts in the completion request haven't been uploaded.
 1. One or more specified parts in the completion request do not match ETag.
 
