@@ -3,7 +3,7 @@ This document describes S4 coverage of IAM and S3 APIs.
 
 -   [1. Common Details](#1-common-details)
     -   [1.1. Account Identification](#11-account-identification)
-    -   [1.2. Endpoints](#12-endpoints)
+    -   [1.2. Endpoint URLs](#12-endpoint-urls)
     -   [1.3. Errors](#13-errors)
         -   [1.3.1. S3 Error Format](#131-s3-error-format)
         -   [1.3.2. Common Errors](#132-common-errors)
@@ -172,25 +172,14 @@ This section addresses common details shared among S4 offered APIs: S3 and IAM.
 
 The account ID is 15 base10 (i.e. 0-9) digit string. It is padded with leading zeros if necessary.
 
-# **1.2. Endpoints**
+# **1.2. Endpoint URLs**
 
-For object storage (**S3**) requests:
+Service endpoint URLs follow these patterns:
 
-| Endpoint | Location |
-| --- | --- |
-| **s3.eu-central-1.s4.mega.io** | Amsterdam |
-| **s3.eu-central-2.s4.mega.io** | Luxembourg |
-| **s3.ca-central-1.s4.mega.io** | Montreal |
-| **s3.ca-west-1.s4.mega.io** | Vancouver |
+* S3: `s3.<endpoint_domain>`
+* IAM: `iam.<endpoint_domain>`
 
-For **IAM** requests:
-
-| Endpoint | Location |
-| --- | --- |
-| **iam.eu-central-1.s4.mega.io** | Amsterdam |
-| **iam.eu-central-2.s4.mega.io** | Luxembourg |
-| **iam.ca-central-1.s4.mega.io** | Montreal |
-| **iam.ca-west-1.s4.mega.io** | Vancouver |
+The current list of `<endpoint_domain>` values, with their corresponding regions, is maintained at [MEGA S4 endpoint URLs](https://help.mega.io/megas4/setup-guides/mega-s4-endpoint-urls).
 
 Unlike S3, S4 allows to retrieve objects in any bucket through any available region.
 
