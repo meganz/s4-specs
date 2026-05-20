@@ -342,14 +342,14 @@ Most of S3 services receive a  `<bucket_name>`  argument identifying the bucket 
 The argument \<bucket_name\> is specified as part of the URL in the HTTP request, e.g.:
 
 `GET /<bucket_name>/ HTTP/1.1.`
-`Host: s3.eu-central-1.s4.mega.io`
+`Host: s3.eu-amsterdam.megas4.com`
 
 ### Virtual-Hosted Style
 
 The argument \<bucket_name\> is specified as part of the Host in the HTTP request (i.e. as part of the sub-domain), e.g.:
 
 `GET / HTTP/1.1.`
-`Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
+`Host: <bucket_name>.s3.eu-amsterdam.megas4.com`
 
 # **2.1.2. Bucket Name Validation**
 
@@ -382,12 +382,12 @@ S3 services involving object manipulation or retrieval requires the object to be
 ### Path Style
 
 `GET /<bucket_name>/<key> HTTP/1.1.`
-`Host: s3.eu-central-1.s4.mega.io`
+`Host: s3.eu-amsterdam.megas4.com`
 
 ### Virtual-Hosted Style
 
 `GET /<key> HTTP/1.1.`
-`Host: <bucket_name>.s3.eu-central-1.s4.mega.io`
+`Host: <bucket_name>.s3.eu-amsterdam.megas4.com`
 
 # **2.1.4. Object Key Validation**
 
@@ -412,7 +412,7 @@ Every bucket and every object, despite who created them, is owned by the canonic
 
 # **2.2. Services**
 
-S3 endpoint is s3._\<region\>_.s4.mega.io.
+S3 endpoint is `s3.<endpoint_domain>`.
 
 # **2.2.1. Buckets**
 
@@ -533,7 +533,7 @@ Creates the bucket  `<bucket_name>`  if it is a valid bucket name and it does no
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -781,7 +781,7 @@ Deletes the bucket  `<bucket_name>`  if it is a valid bucket name and it is not 
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -932,7 +932,7 @@ Determines if the bucket  `<bucket_name>`  exists and you have access to it.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -1051,7 +1051,7 @@ Returned in case `<bucket_name>` does not satisfy restrictions.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -1134,7 +1134,7 @@ This service is currently not supported and will always return `AccessControlLis
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -1297,7 +1297,7 @@ List objects in  `<bucket_name>`  .
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -1503,7 +1503,7 @@ List objects in  `<bucket_name>` .
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -1716,7 +1716,7 @@ Creates a new object with the provided contents
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -2513,7 +2513,7 @@ Returned in case the upload failed to complete
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -3281,7 +3281,7 @@ Returned if at least one of the specified preconditions for the source `x-amz-co
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -3729,7 +3729,7 @@ Returned if at least one of the specified preconditions `If-None-Match` or `If-M
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -4113,7 +4113,7 @@ Returned if at least one of the specified preconditions `If-None-Match` or `If-M
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -4300,7 +4300,7 @@ Note that if the object with the given key does not exist, `DeleteObject` still 
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -4673,7 +4673,7 @@ Returned if the calculated MD5 digest or checksum does not match the one provide
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -5251,7 +5251,7 @@ x-amz-checksum-algorithm
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -5760,7 +5760,7 @@ UploadPartCopy is supported for full object copies only.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -6281,7 +6281,7 @@ Returned in case the request failed to complete, e.g. storage timeout, etc.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -6563,7 +6563,7 @@ Returned due to technical reasons.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -6959,7 +6959,7 @@ Returned in case the request failed to complete, e.g. failed to retrieve the upl
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -7116,7 +7116,7 @@ Returned in case \<upload-id-marker\> in invalid.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -7271,7 +7271,7 @@ This service is currently not supported and will always return `AccessControlLis
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -7444,7 +7444,7 @@ Returned due to technical reasons.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -7652,7 +7652,7 @@ Returned due to technical reasons.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -7790,7 +7790,7 @@ Mandatory JSON property is missing.
 </td>
 <td align="left">
 
-Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-central-1.s4.mega.io`
+Host header must start with  `<bucket_name>`, e.g.  `test-bucket.s3.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -7933,7 +7933,7 @@ Currently, it is NOT supported by S4.
 
 # **3.1. Conventions**
 
-IAM services have the end-point  `iam.<region>.s4.mega.io`, and all of them have a common URL resource:  `/`.
+IAM services have the end-point  `iam.<endpoint_domain>`, and all of them have a common URL resource:  `/`.
 IAM services have an  `Action`  parameter that contains the name of the service. Both the  `Action`  parameter as well as the rest of the service arguments can be received in two different ways:
 
 ### Parameters in Query String
@@ -7980,7 +7980,7 @@ Action: `ActionName`
 <tr>
 <td align="left">
 
-`GET /?Action=ListPolicies&Version=2010-05-08&AUTHPARAMS HTTP/1.1`<br>`Host: iam.eu-central-1.s4.mega.io`
+`GET /?Action=ListPolicies&Version=2010-05-08&AUTHPARAMS HTTP/1.1`<br>`Host: iam.eu-amsterdam.megas4.com`
 
 </td>
 </tr>
@@ -8034,7 +8034,7 @@ _URL encoded query string_
 <tr>
 <td align="left">
 
-`GET / HTTP/1.1`<br>`Host: iam.eu-central-1.s4.mega.io`<br><br>`Action=ListPolicies&Version=2010-05-08&AUTHPARAMS`
+`GET / HTTP/1.1`<br>`Host: iam.eu-amsterdam.megas4.com`<br><br>`Action=ListPolicies&Version=2010-05-08&AUTHPARAMS`
 
 </td>
 </tr>
