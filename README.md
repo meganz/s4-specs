@@ -361,17 +361,17 @@ The argument \<bucket_name\> is specified as part of the Host in the HTTP reques
 
 * Bucket names must be between  `3`  (min) and  `63`  (max) characters long
 
-* Bucket names can consist only of lowercase letters, numbers, dots  `.`, and hyphens  `-`
+* Bucket names can consist only of lowercase ASCII letters (`a`-`z`), numbers, dots  `.`, and hyphens  `-`
 
-* Bucket names must begin and end with a letter or number
+* Bucket names must begin and end with a lowercase ASCII letter or number
 
-* Bucket names must not contain two adjacent periods
+* Bucket names must not contain two adjacent dots (`..`), a dot followed by a hyphen (`.-`), or a hyphen followed by a dot (`-.`)
 
 * Bucket names must not be formatted as an IP address (for example,  `192.168.5.4`)
 
-* Bucket names must not start with the prefix `xn--`
+* Bucket names must not start with a reserved prefix: `xn--`, `sthree-`, or `amzn-s3-demo-`
 
-* Bucket names must not end with the suffix `-s3alias`
+* Bucket names must not end with a reserved suffix: `-s3alias`, `--ol-s3`, `.mrap`, `--x-s3`, or `--table-s3`
 
 If validation fails the above restrictions, an **AccessDenied** or **InvalidBucketName** error is returned (depending on the service being accessed).
 
